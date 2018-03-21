@@ -11,6 +11,9 @@
     - mailman
     - pipermail + hyperkitty?
   - nsd3
+- local git mirror
+  - git@github.com:plugorgau/website.git for jekyll builds
+  - https://github.com/plugorgau public repositories in general
 
 ### Goal 2018-03-21
 - nginx webserver
