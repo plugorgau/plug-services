@@ -1,0 +1,8 @@
+---
+# file: site.yml
+- hosts: web-servers
+#  remote_user: glass
+
+  tasks:
+  - name: Install nginx
+    apt: name=nginx state=latest
