@@ -7,3 +7,9 @@ Current naming scheme is based on power plugs (Get it)?
 
 @wings has updated plugav1-2, had 499 packages to upgrade.
 @wings is going to install Terminology to make things easier/more comfy
+
+sudo add-apt-repository ppa:enlightenment-git/ppa
+sudo apt-get update
+sudo apt-get install terminology
+
+
