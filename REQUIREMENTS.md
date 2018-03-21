@@ -1,4 +1,7 @@
 ### Basic list of requirements for this repo
+- Base install
+  - install Git
+  - install nano, wget, htop
 
 - Whatever's running on power.plug.org.au
   - webserver
