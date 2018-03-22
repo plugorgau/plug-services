@@ -26,22 +26,33 @@
 
   - name: Use Git to checkout latest plug website
     git: version="master" repo="https://github.com/plugorgau/plugorgau.github.io.git" dest="/home/glass/plugorgau.github.io/"
-    
-
-  - name: Reset permissions on plug website repo
-    debug: msg="Not yet implemented"
+    become_user: glass
+    register: plug_website_git
 
   - name: Use Jekyll to build plug website
-    debug: msg="Not yet implemented"
+    command: "jekyll build"
+    args: 
+      chdir: /home/glass/plugorgau.github.io/
+    become_user: glass
+    when: plug_website_git.changed
+    register: plug_website_new_build
 
   - name: Use rsync destructively to update running site
-    debug: msg="Not yet implemented"
+    synchronize:
+      src: /home/glass/plugorgau.github.io/_site/
+      dest: /var/www/bayonet.plug.org.au/
+      delete: yes
+      recursive: yes
+    become_user: www-data
+#    when: plug_website_new_build.changed
 
   - name: Install nginx site config
     debug: msg="Not yet implemented"
+    notify: reload nginx
 
   - name: Enable nginx site config
     debug: msg="Not yet implemented"
+    notify: reload nginx
 
   #role: 
 
