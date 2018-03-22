@@ -4,5 +4,40 @@
 #  remote_user: glass
 
   tasks:
+  #role:base
+  - name: Install essential utils
+    apt: name=nano,joe,git,vim,emacs,screen,tmux state=latest
+
+  - name: Install build-essential
+    apt: name=build-essential state=latest
+
+  #role:web-servers
   - name: Install nginx
     apt: name=nginx state=latest
+
+  - name: Configure nginx
+    debug: msg="Not yet implemented"
+
+  #role:plug-website
+  - name: Install jekyll
+    apt: name=jekyll state=latest
+
+  - name: Setup deploy key for plug-website
+    debug: msg="Not yet implemented"
+
+  - name: Use Git to checkout latest plug website
+    debug: msg="Not yet implemented"
+
+  - name: Use Jekyll to build plug website
+    debug: msg="Not yet implemented"
+
+  - name: Use rsync destructively to update running site
+    debug: msg="Not yet implemented"
+
+  - name: Install nginx site config
+    debug: msg="Not yet implemented"
+
+  - name: Enable nginx site config
+    debug: msg="Not yet implemented"
+
+  #role: 
