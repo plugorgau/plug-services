@@ -6,7 +6,17 @@
   tasks:
   #role:base
   - name: Install essential utils
-    apt: name=nano,joe,git,vim,emacs,screen,tmux state=latest
+    apt: name={{ item }} state=latest
+    with_items:
+      - nano
+      - joe
+      - git
+      - vim
+      - emacs
+      - screen
+      - tmux
+      - molly-guard
+      - links
 
   - name: Install build-essential
     apt: name=build-essential state=latest
