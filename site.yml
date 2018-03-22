@@ -20,6 +20,9 @@
     notify:
     - reload nginx
 
+  - name: Configure default webpage
+    template: src=nginx/default.html dest=/var/www/html/index.html
+
   #role:plug-website
   - name: Install jekyll
     apt: name=jekyll state=latest
@@ -37,21 +40,26 @@
     when: plug_website_git.changed
     register: plug_website_new_build
 
-  - name: Use rsync destructively to update running site
-    synchronize:
-      src: /home/glass/plugorgau.github.io/_site/
-      dest: /var/www/bayonet.plug.org.au/
-      delete: yes
-      recursive: yes
-    become_user: www-data
+#  - name: Use rsync destructively to update running site
+#    synchronize:
+#      src: /home/glass/plugorgau.github.io/_site/
+#      dest: /var/www/bayonet.plug.org.au/
+#      delete: yes
+#      recursive: yes
+#    become_user: www-data
 #    when: plug_website_new_build.changed
 
   - name: Install nginx site config
-    debug: msg="Not yet implemented"
+    template: 
+      src: plug-website/bayonet.plug.org.au.conf
+      dest: /etc/nginx/sites-available/bayonet.plug.org.au.conf
     notify: reload nginx
 
   - name: Enable nginx site config
-    debug: msg="Not yet implemented"
+    file:
+      state: link 
+      src: ../sites-available/bayonet.plug.org.au.conf
+      dest: /etc/nginx/sites-enabled/bayonet.plug.org.au.conf
     notify: reload nginx
 
   #role: 
