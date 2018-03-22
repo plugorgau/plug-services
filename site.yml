@@ -17,15 +17,18 @@
 
   - name: Configure nginx
     template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
+    notify:
+    - reload nginx
 
   #role:plug-website
   - name: Install jekyll
     apt: name=jekyll state=latest
 
-  - name: Setup deploy key for plug-website
-    debug: msg="Not yet implemented"
-
   - name: Use Git to checkout latest plug website
+    git: version="master" repo="https://github.com/plugorgau/plugorgau.github.io.git" dest="/home/glass/plugorgau.github.io/"
+    
+
+  - name: Reset permissions on plug website repo
     debug: msg="Not yet implemented"
 
   - name: Use Jekyll to build plug website
@@ -41,3 +44,8 @@
     debug: msg="Not yet implemented"
 
   #role: 
+
+  #TODO: Move this to its own file
+  handlers:
+    - name: reload nginx
+      service: name=nginx state=reloaded
