@@ -40,6 +40,10 @@
     when: plug_website_git.changed
     register: plug_website_new_build
 
+  - name: Use rsync + a script to destructively update running site
+    shell: bash /home/glass/plugorgau.github.io/deploy.sh
+    when: plug_website_new_build.changed
+
 #  - name: Use rsync destructively to update running site
 #    synchronize:
 #      src: /home/glass/plugorgau.github.io/_site/
