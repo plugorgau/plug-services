@@ -16,7 +16,7 @@
     apt: name=nginx state=latest
 
   - name: Configure nginx
-    debug: msg="Not yet implemented"
+    template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
 
   #role:plug-website
   - name: Install jekyll
