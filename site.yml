@@ -18,6 +18,11 @@
       - molly-guard
       - links
 
+  - name: Set nano as default editor
+    alternatives:
+      name: editor
+      path: /bin/nano
+
   - name: Install build-essential
     apt: name=build-essential state=latest
 
@@ -65,15 +70,15 @@
 
   - name: Install nginx site config
     template: 
-      src: plug-website/bayonet.plug.org.au.conf
-      dest: /etc/nginx/sites-available/bayonet.plug.org.au.conf
+      src: plug-website/plug.org.au.conf
+      dest: /etc/nginx/sites-available/plug.org.au.conf
     notify: reload nginx
 
   - name: Enable nginx site config
     file:
       state: link 
-      src: ../sites-available/bayonet.plug.org.au.conf
-      dest: /etc/nginx/sites-enabled/bayonet.plug.org.au.conf
+      src: ../sites-available/plug.org.au.conf
+      dest: /etc/nginx/sites-enabled/plug.org.au.conf
     notify: reload nginx
 
   #role: 
