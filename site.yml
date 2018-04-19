@@ -38,6 +38,10 @@
   - name: Configure default webpage
     template: src=nginx/default.html dest=/var/www/html/index.html
 
+  #role:borgbackup
+  - name: Install Borg backup utility
+    apt: name=borgbackup state=latest
+
   #role:plug-website
   - name: Install jekyll
     apt: name=jekyll state=latest
