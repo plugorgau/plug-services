@@ -26,6 +26,31 @@
   - name: Install build-essential
     apt: name=build-essential state=latest
 
+  #role:efs
+  # This temporarily sets up our EFS mounts in fstab.
+  # This will cause mount failures on your machine if you do not have access to our AWS VPC as it tries to mount on boot.
+  # Fortunately this degrades fairly gracefully on Ubuntu 16.04 and Debian 8 and later, still allowing the machine to
+  # finish booting, but you shouldn't run this on a machine you care a lot about.
+
+  - name: Install NFS utilities
+    apt: name=nfs-common state=latest
+
+  - name: Setup PLUG-General EFS mount
+    mount:
+      name: /srv/efs/
+      src: fs-9e936fa7.efs.ap-southeast-2.amazonaws.com:/
+      fstype: nfs4
+      opts: _netdev,nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2
+      state: present
+
+  - name: Setup PLUG-Backup EFS mount
+    mount:
+      name: /srv/backup/
+      src: fs-2f718d16.efs.ap-southeast-2.amazonaws.com:/
+      fstype: nfs4
+      opts: _netdev,nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2
+      state: present
+
   #role:web-servers
   - name: Install nginx
     apt: name=nginx state=latest
