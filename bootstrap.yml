@@ -1,0 +1,26 @@
+---
+# file: bootstrap.yml
+- hosts: bootstrap
+  remote_user: wings
+  become: yes
+
+  vars_files:
+    - "vars/common.yml"
+    - [ "vars/{{ansible_os_family}}.yml", "vars/common.yml" ]
+
+  tasks:
+  #role:bootstrap
+  - name: Users - Create the 'glass' user for management purposes
+    user: name=glass shell=/bin/bash comment="Magic Glass Management User"
+
+  - name: Groups - Add the 'glass' user to the sudoers user group.
+    user: name=glass groups='{{ sudo_group }}'
+
+  - name: SSH - Add public key to the remote host
+    authorized_key: user='{{ glass_user }}' key="{{ lookup('file', 'secrets/ssh/glass-deploy.pub') }}"
+
+  - name: Sudo - Add an additional "sudoers" policy to allow for passwordless sudo
+    template: src=sudo/sudoers.d/glass dest=/etc/sudoers.d/glass validate='/usr/sbin/visudo -cf %s' mode=0440
+
+# TODO: remove bootstrap key from authorized hosts
+

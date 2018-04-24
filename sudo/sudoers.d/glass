@@ -1,0 +1,2 @@
+# Allow any command to be executed by user "glass"
+{{ glass_user }}   ALL= (ALL:ALL) NOPASSWD: ALL
