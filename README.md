@@ -31,9 +31,13 @@ First-time usage:
 * Follow the instructions for [the plug-services-secrets repository](https://github.com/plugorgau/plug-services-secrets)
 
 Bootstrapping new nodes:
-* Set username in bootstrap.yml (usually "admin" or "ubuntu")
 
-* ansible-playbook bootstrap.yml --private-key='secrets/ssh/glass-bootstrap' -i development --ask-sudo-pass
+To bootstrap a new node, use the bootstrap keypair when creating it, then run the below command replacing "user" with the initial user - this should be something like "ubuntu" or "admin"
+
+* ansible-playbook bootstrap.yml -u user --private-key='secrets/ssh/glass-bootstrap' -i inventory --ask-sudo-pass
 
 Performing a standard run:
-* TODOl
+
+Once keys are in place, running the playbook is simple.
+
+* ansible-playbook site.yml -i inventory
