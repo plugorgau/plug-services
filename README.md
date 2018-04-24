@@ -40,4 +40,8 @@ Performing a standard run:
 
 Once keys are in place, running the playbook is simple.
 
-* ansible-playbook site.yml -i inventory
+` ansible-playbook site.yml -i inventory `
+
+You may also find it handy to do a "dry run" using Ansible's check mode:
+
+` ansible-playbook site.yml -i inventory --check `
