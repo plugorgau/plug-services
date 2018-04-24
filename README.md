@@ -31,7 +31,9 @@ First-time usage:
 * Follow the instructions for [the plug-services-secrets repository](https://github.com/plugorgau/plug-services-secrets)
 
 Bootstrapping new nodes:
-* TODO
+* Set username in bootstrap.yml (usually "admin" or "ubuntu")
+
+* ansible-playbook bootstrap.yml --private-key='secrets/ssh/glass-bootstrap' -i development --ask-sudo-pass
 
 Performing a standard run:
-* TODO
+* TODOl
