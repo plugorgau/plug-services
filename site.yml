@@ -1,7 +1,7 @@
 ---
 # file: site.yml
 - hosts: web-servers
-#  remote_user: glass
+  remote_user: {{ glass_user }}
 
   tasks:
   #role:base
