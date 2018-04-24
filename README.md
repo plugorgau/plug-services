@@ -8,7 +8,11 @@ Getting Started
 
 Requirements
 ------------
-* To be defined later
+Requirements
+------------
+* Orchestrator running Ansible 2.2+ and sshpass
+
+* Client machines running Ubuntu 16.04+ or Debian 8+ (officially we only support Debian 9 right now)
 
 Usage
 -----
