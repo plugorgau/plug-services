@@ -1,7 +1,11 @@
 ---
 # file: bootstrap.yml
+
+# This playbook is intended to set up keys and other
+# goodies for new Ansible hosts. Put new hosts in bootstrap
+# and then run it according to the instructions in the repo.
+
 - hosts: bootstrap
-  remote_user: wings
   become: yes
 
   vars_files:
