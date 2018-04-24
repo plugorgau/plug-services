@@ -34,7 +34,7 @@ Bootstrapping new nodes:
 
 To bootstrap a new node, use the bootstrap keypair when creating it, then run the below command replacing "user" with the initial user - this should be something like "ubuntu" or "admin"
 
-* ansible-playbook bootstrap.yml -u user --private-key='secrets/ssh/glass-bootstrap' -i inventory --ask-sudo-pass
+* ansible-playbook bootstrap.yml -u user --private-key='secrets/ssh/glass-bootstrap' -i inventory --ask-become-pass
 
 Performing a standard run:
 
