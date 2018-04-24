@@ -16,6 +16,8 @@ Usage
 First-time usage:
 * Install Ansible 2.2+ and sshpass on your workstation
 
+* (Optionally) Enter a Projects folder to keep it contained
+
 * Clone the plug-services repositories
 
 `git clone https://github.com/plugorgau/plug-services.git`
