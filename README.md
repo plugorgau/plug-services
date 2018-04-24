@@ -26,3 +26,8 @@ First-time usage:
 
 * Follow the instructions for [the plug-services-secrets repository](https://github.com/plugorgau/plug-services-secrets)
 
+Bootstrapping new nodes:
+* TODO
+
+Performing a standard run:
+* TODO
