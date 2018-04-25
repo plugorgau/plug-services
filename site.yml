@@ -112,7 +112,9 @@
       dest: /etc/nginx/sites-enabled/plug.org.au.conf
     notify: reload nginx
 
-  #role: 
+  #role:mumble-servers
+  - name: Install Mumble
+    apt: name=mumble-server state=latest
 
   #TODO: Move this to its own file
   handlers:
