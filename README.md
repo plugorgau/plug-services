@@ -32,7 +32,7 @@ First-time usage:
 
 Bootstrapping new nodes:
 
-To bootstrap a new node, use the bootstrap keypair when creating it, then run the below command replacing "user" with the initial user - this should be something like "ubuntu" or "admin". If your user requires a password for login or sudo access, add --ask-pass and --ask-become-pass as appropriate.
+To bootstrap a new node, use the bootstrap keypair when creating it, ensure it is listed in the bootstrap inventory file (bootstrap), then run the below command replacing "user" with the initial user - this should be something like "ubuntu" or "admin". If your user requires a password for login or sudo access, add --ask-pass and --ask-become-pass as appropriate.
 
 ` ansible-playbook bootstrap.yml -u user -i bootstrap `
 
