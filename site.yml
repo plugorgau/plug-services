@@ -28,6 +28,15 @@
   - name: Install build-essential
     apt: name=build-essential state=latest
 
+  - name: Create bin directory in /root/ for storing util scripts
+    file:
+      path: /root/bin
+      state: directory
+      owner: root
+      group: root
+      mode: 0700
+      recurse: yes
+
   #role:efs
   # This temporarily sets up our EFS mounts in fstab.
   # This will cause mount failures on your machine if you do not have access to our AWS VPC as it tries to mount on boot.
@@ -69,6 +78,14 @@
   #role:borgbackup
   - name: Install Borg backup utility
     apt: name=borgbackup state=latest
+
+  - name: Create Borg backup script
+    template:
+      src: borgbackup/borgauto.sh.j2
+      dest: /root/bin/borgauto.sh
+      owner: root
+      group: root
+      mode: 0700
 
   #role:plug-website
   - name: Install jekyll
