@@ -2,7 +2,7 @@
 
 # Setting this, so the repo does not need to be given on the commandline:
 #export BORG_REPO=ssh://backup@bayonet.plug.org.au:22/srv/backup/borg-{{ ansible_fqdn }}
-BORG_REPO=/srv/backup/borg-{{ ansible_fqdn }}
+export BORG_REPO=/srv/backup/borg-{{ ansible_fqdn }}
 
 # Setting this, so you won't be asked for your repository passphrase:
 export BORG_PASSPHRASE='{{ borg_passphrase }}'
