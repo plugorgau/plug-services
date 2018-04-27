@@ -18,6 +18,7 @@
       - tmux
       - molly-guard
       - links
+      - eatmydata
 
   - name: Set nano as default editor
     alternatives:
