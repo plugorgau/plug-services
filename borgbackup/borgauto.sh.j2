@@ -12,6 +12,9 @@ export BORG_PASSPHRASE='{{ borg_passphrase }}'
 # or this to ask an external program to supply the passphrase:
 #export BORG_PASSCOMMAND='pass show backup'
 
+# Init once only
+#borg init --encryption=repokey ; exit
+
 # some helpers and error handling:
 info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
 trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM

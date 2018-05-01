@@ -15,6 +15,9 @@ export BORG_PASSPHRASE='{{ borg_passphrase }}'
 # Setting this to enable power to access bayonet
 export BORG_RSH='ssh -i /root/bin/borg-power/ssh/id_ecdsa'
 
+# Init once only
+#borg init --encryption=repokey ; exit
+
 # some helpers and error handling:
 info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
 trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
