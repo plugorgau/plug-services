@@ -37,7 +37,6 @@ ionice -c3 borg create              \
     --exclude '/var/log/borgbackup/'\
     --exclude '/var/cache/'         \
     --exclude '/var/tmp/'           \
-    --exclude '/srv/efs/'           \
     --exclude '/srv/backup/'        \
     --exclude '/proc'               \
     --exclude '/dev'                \
