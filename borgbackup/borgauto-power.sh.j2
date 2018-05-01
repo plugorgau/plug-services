@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Copy output to logfile
-exec &> >(tee -a "/root/bin/borgbackup/logs/{{ ansible_fqdn }}/borg-auto.$(date +%Y%m%d-%H%M).log")
+exec &> >(tee -a "/var/log/borgbackup/borg-auto.$(date +%Y%m%d-%H%M).log")
 
 # Setting this, so the repo does not need to be given on the commandline:
 export BORG_REPO=ssh://borg-power@bayonet.plug.org.au:22/srv/backup/borg-{{ ansible_fqdn }}
