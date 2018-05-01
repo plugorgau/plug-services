@@ -24,7 +24,7 @@ info "Starting backup"
 # Backup the most important directories into an archive named after
 # the machine this script is currently running on:
 
-borg create                         \
+ionice -c3 borg create              \
     --verbose                       \
     --filter AME                    \
     --list                          \
@@ -36,6 +36,7 @@ borg create                         \
     --exclude '/home/*/.cache/'     \
     --exclude '/home/pot_homes/spamfilter/Maildir' \
     --exclude '/home/spamfilter/Maildir' \
+    --exclude '/var/log/borgbackup/'\
     --exclude '/var/cache/'         \
     --exclude '/var/tmp/'           \
     --exclude '/srv/backup/'        \
@@ -55,7 +56,7 @@ info "Pruning repository"
 # limit prune's operation to this machine's archives and not apply to
 # other machines' archives also:
 
-borg prune                          \
+ionice -c3 borg prune               \
     --list                          \
     --prefix '{hostname}-'          \
     --show-rc                       \
