@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copy output to logfile
 exec &> >(tee -a "/var/log/borgbackup/borg-auto.$(date +%Y%m%d-%H%M).log")
@@ -39,9 +39,9 @@ borg create                         \
     --exclude '/var/cache/'         \
     --exclude '/var/tmp/'           \
     --exclude '/srv/backup/'        \
-    --exclude '/proc/'              \
-    --exclude '/dev/'               \
-    --exclude '/sys/'               \
+    --exclude '/proc'               \
+    --exclude '/dev'                \
+    --exclude '/sys'                \
                                     \
     ::'{hostname}-{now}'            \
     /                               \

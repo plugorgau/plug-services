@@ -37,9 +37,9 @@ borg create                         \
     --exclude '/var/tmp/'           \
     --exclude '/srv/efs/'           \
     --exclude '/srv/backup/'        \
-    --exclude '/proc/'              \
-    --exclude '/dev/'               \
-    --exclude '/sys/'               \
+    --exclude '/proc'               \
+    --exclude '/dev'                \
+    --exclude '/sys'                \
                                     \
     ::'{hostname}-{now}'            \
     /                               \
