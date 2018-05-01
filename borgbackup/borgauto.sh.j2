@@ -26,9 +26,13 @@ borg create                         \
     --show-rc                       \
     --compression lz4               \
     --exclude-caches                \
+    --exclude '*.pyc'               \
     --exclude '/home/*/.cache/*'    \
+    --exclude '/home/pot_homes/spamfilter/Maildir' \
+    --exclude '/home/spamfilter/Maildir' \
     --exclude '/var/cache/*'        \
     --exclude '/var/tmp/*'          \
+    --exclude '/srv/efs/*'          \
     --exclude '/srv/backup/*'       \
     --exclude '/proc/*'             \
     --exclude '/dev/*'              \
@@ -52,7 +56,7 @@ borg prune                          \
     --show-rc                       \
     --keep-daily    7               \
     --keep-weekly   4               \
-    --keep-monthly  6               \
+    --keep-monthly  -1              \
     --keep-yearly   -1              \
 
 prune_exit=$?
