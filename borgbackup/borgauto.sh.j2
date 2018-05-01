@@ -27,16 +27,16 @@ borg create                         \
     --compression lz4               \
     --exclude-caches                \
     --exclude '*.pyc'               \
-    --exclude '/home/*/.cache/*'    \
+    --exclude '/home/*/.cache/'     \
     --exclude '/home/pot_homes/spamfilter/Maildir' \
     --exclude '/home/spamfilter/Maildir' \
-    --exclude '/var/cache/*'        \
-    --exclude '/var/tmp/*'          \
-    --exclude '/srv/efs/*'          \
-    --exclude '/srv/backup/*'       \
-    --exclude '/proc/*'             \
-    --exclude '/dev/*'              \
-    --exclude '/sys/*'              \
+    --exclude '/var/cache/'         \
+    --exclude '/var/tmp/'           \
+    --exclude '/srv/efs/'           \
+    --exclude '/srv/backup/'        \
+    --exclude '/proc/'              \
+    --exclude '/dev/'               \
+    --exclude '/sys/'               \
                                     \
     ::'{hostname}-{now}'            \
     /                               \
