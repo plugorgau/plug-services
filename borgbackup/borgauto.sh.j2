@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copy output to logfile
 exec &> >(tee -a "/var/log/borgbackup/borg-auto.$(date +%Y%m%d-%H%M).log")
