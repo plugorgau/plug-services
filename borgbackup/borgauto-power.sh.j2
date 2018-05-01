@@ -1,5 +1,8 @@
 #!/bin/bash
 
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH
+
 # Copy output to logfile
 exec &> >(tee -a "/var/log/borgbackup/borg-auto.$(date +%Y%m%d-%H%M).log")
 
@@ -43,9 +46,10 @@ ionice -c3 borg create              \
     --exclude '/var/cache/'         \
     --exclude '/var/tmp/'           \
     --exclude '/srv/backup/'        \
-    --exclude '/proc'               \
     --exclude '/dev'                \
+    --exclude '/proc'               \
     --exclude '/sys'                \
+    --exclude '/tmp'                \
                                     \
     ::'{hostname}-{now}'            \
     /                               \
