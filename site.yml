@@ -87,6 +87,14 @@
       group: root
       mode: 0700
 
+  - name: Ensure Borg log file directory exists
+    file:
+      path: /var/log/borgbackup/
+      state: directory
+      owner: root
+      group: adm
+      mode: 0755
+
   #role:plug-website
   - name: Install jekyll
     apt: name=jekyll state=latest
