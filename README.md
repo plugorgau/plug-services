@@ -10,7 +10,7 @@ Requirements
 ------------
 * Control Machine running Ansible 2.2+ and sshpass
 
-* Client machines running Ubuntu 16.04+ or Debian 8+ (officially we only support Debian 9 right now)
+* Client machines running Ubuntu 16.04+ or Debian 8+ (we only officially support Debian 9 right now)
 
 * Access to the secrets repo (for now)
 
