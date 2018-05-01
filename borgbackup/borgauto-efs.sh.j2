@@ -34,16 +34,7 @@ ionice -c3 borg create              \
     --compression lz4               \
     --exclude-caches                \
     --exclude '*.pyc'               \
-    --exclude '/home/*/.cache/'     \
-    --exclude '/home/pot_homes/spamfilter/Maildir' \
-    --exclude '/home/spamfilter/Maildir' \
-    --exclude '/var/log/borgbackup/'\
-    --exclude '/var/cache/'         \
-    --exclude '/var/tmp/'           \
     --exclude '/srv/backup/'        \
-    --exclude '/proc'               \
-    --exclude '/dev'                \
-    --exclude '/sys'                \
                                     \
     ::'efs-{now}'                   \
     /srv/efs/                       \
