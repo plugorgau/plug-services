@@ -145,6 +145,20 @@
   - name: Install useful LDAP utils
     apt: name=ldap-utils state=latest
 
+  #role:php
+  - name: PHP - Install php-fpm
+    apt: name=php7.0-fpm
+    # TODO Configure php-fpm
+
+  #role:ugmm
+  - name: UGMM - Install smarty3 templating engine
+    apt: name=smarty3 state=latest
+
+  - name: UGMM - Install LDAP PHP module
+    apt: name=php7.0-ldap state=latest
+    # TODO nginx cofig
+    # TODO php pool?
+
   #role:mumble-servers
   - name: Install Mumble
     apt: name=mumble-server state=latest
