@@ -26,7 +26,7 @@ First-time usage:
 
 `git clone https://github.com/plugorgau/plug-services.git`
 
-`git clone https://github.com/plugorgau/plug-services-secrets.git`
+`git clone git@github.com:plugorgau/plug-services-secrets.git`
 
 * Follow the instructions for [the plug-services-secrets repository](https://github.com/plugorgau/plug-services-secrets)
 
