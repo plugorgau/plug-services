@@ -138,6 +138,13 @@
       dest: /etc/nginx/sites-enabled/plug.org.au.conf
     notify: reload nginx
 
+  #role:ldap
+  - name: Install LDAP server
+    apt: name=slapd state=latest
+
+  - name: Install useful LDAP utils
+    apt: name=ldap-utils state=latest
+
   #role:mumble-servers
   - name: Install Mumble
     apt: name=mumble-server state=latest
@@ -146,3 +153,4 @@
   handlers:
     - name: reload nginx
       service: name=nginx state=reloaded
+
