@@ -1,5 +1,5 @@
-NOTES
-# Check out https://tylersguides.com/articles/backup-restore-openldap/
+# NOTES
+Check out https://tylersguides.com/articles/backup-restore-openldap/
 
 # How to backup existing LDAP?
 slapcat -n 0 -l config.ldif
