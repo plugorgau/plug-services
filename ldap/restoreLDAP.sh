@@ -5,8 +5,9 @@
 
 # Do an Ansible run to install slapd and ldap-utils
 ansible-playbook site.yml -i inventory
-# Stop LDAP service
+
 service slapd stop
+
 # Now we need to prepare the config dir and restore config
 # Move existing config dir (/etc/ldap/slapd.d) somewhere safe
 mv /etc/ldap/slapd.d /etc/ldap/slapd.d.`date '+%Y-%m-%d'`
@@ -25,3 +26,5 @@ mkdir /var/lib/ldap
 slapadd -n 1 -F /etc/ldap/slapd.d -l /root/ldap-import/data.ldif
 # Fix permissions
 chown -R openldap:openldap /var/lib/ldap
+
+service slapd start
