@@ -47,6 +47,17 @@
   - name: Install NFS utilities
     apt: name=nfs-common state=latest
 
+  - name: Ensure EFS mount points exist
+    file:
+      path: "{{ item }}"
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
+    with_items: 
+      - /srv/efs
+      - /srv/backup
+
   - name: Setup PLUG-General EFS mount
     mount:
       name: /srv/efs
