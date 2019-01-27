@@ -1,0 +1,85 @@
+# debconf-show exim4-config
+* exim4/dc_eximconfig_configtype: internet site; mail is sent and received directly using SMTP
+* exim4/dc_other_hostnames: bayonet.plug.org.au
+* exim4/dc_minimaldns: false
+* exim4/dc_relay_domains:
+* exim4/mailname: bayonet.plug.org.au
+  exim4/dc_readhost:
+* exim4/dc_relay_nets:
+* exim4/use_split_config: true
+  exim4/hide_mailname:
+* exim4/dc_local_interfaces: 127.0.0.2
+  exim4/no_config: true
+  exim4/dc_smarthost:
+* exim4/dc_localdelivery: mbox format in /var/mail/
+  exim4/exim4-config-title:
+* exim4/dc_postmaster: glass
+
+# DebianPkg:debconf-utils:debconf-get-selections | grep exim4-config
+# Reconfigure exim4-config instead of this package
+# exim4-config	exim4/use_split_config	boolean	true
+# # Reconfigure exim4-config instead of this package
+# exim4-config	exim4/hide_mailname	boolean	
+# exim4-config	exim4/dc_readhost	string	
+# exim4-config	exim4/dc_eximconfig_configtype	select	internet site; mail is sent and received directly using SMTP
+# exim4-config	exim4/dc_other_hostnames	string	bayonet.plug.org.au
+# # Reconfigure exim4-config instead of this package
+# exim4-config	exim4/dc_postmaster	string	glass
+# exim4-config	exim4/dc_relay_nets	string	
+# exim4-config	exim4/mailname	string	bayonet.plug.org.au
+# exim4-config	exim4/dc_smarthost	string	
+# exim4-config	exim4/no_config	boolean	true
+# exim4-config	exim4/dc_relay_domains	string	
+# exim4-config	exim4/dc_local_interfaces	string	127.0.0.2
+# exim4-config	exim4/dc_minimaldns	boolean	false
+# exim4-config	exim4/dc_localdelivery	select	mbox format in /var/mail/
+
+# debconf-set-selections filename
+cat du-debconf-get-selections_exim4-config.1 | debconf-set-selections /dev/stdin
+echo "exim4-config	exim4/dc_local_interfaces	string	127.0.0.2" | debconf-set-selections /dev/stdin
+
+# reads debconf, writes to conf.conf
+rm /etc/exim4/update-exim4.conf.conf ; dpkg-reconfigure -f noninteractive exim4-config
+
+# reads conf.conf, writes to debconf+conf.conf
+dpkg-reconfigure -f noninteractive exim4-config
+
+/etc/exim4/update-exim4.conf.conf
+# Edit this file and /etc/mailname by hand and execute update-exim4.conf
+# # yourself or use 'dpkg-reconfigure exim4-config'
+
+https://wiki.debian.org/Exim
+"As with any change to the configuration, run update-exim4.conf then restart exim (service exim4 restart)."
+
+https://docs.ansible.com/ansible/latest/modules/debconf_module.html
+=== ansible site.yml
+  - name: Preconfigure exim4
+    template:
+      src: mail-mta/update-exim4.conf.conf.j2
+      dest: /etc/exim4/update-exim4.conf.conf
+      owner: root
+      group: root
+      mode: 0644
+    notify: "update exim4 config"
+
+  # TODO
+  #- debconf: name='exim4-config' question='exim4/dc_local_interfaces' value='' vtype='string'
+  #  # notify: reconfigure exim4
+
+  #role:mumble-servers
+  - name: Install Mumble
+    apt: name=mumble-server state=latest
+    
+  #TODO: Move this to its own file
+  handlers:
+    - name: reload nginx
+      service: name=nginx state=reloaded
+
+    - name: reconfigure exim4
+      command: dpkg-reconfigure -f noninteractive exim4-config
+      listen: "update exim4 config"
+
+    - name: restart exim4
+      service: name=exim4 state=restarted
+      listen: "update exim4 config"
+
