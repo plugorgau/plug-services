@@ -63,3 +63,7 @@ NOTICE: a2enconf php7.0-fpm
 - Enable rewrite - a2enmod rewrite
 - Remove conditional when requiring smarty, as old bug
 - Change to smarty3 in require
+- Got php-auth installed via PECL, which helped
+- Fixed smarty3 changes, see latest ugmm commits
+- Potentially need HTTP_Auth to maintain state between pages
+
