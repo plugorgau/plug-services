@@ -86,6 +86,12 @@
   - name: Configure default webpage
     template: src=nginx/default.html dest=/var/www/html/index.html
 
+  - name: Install certbot
+    apt: name=certbot state=latest
+
+  - name: Install certbot nginx plugin
+    apt: name=python-certbot-nginx state=latest
+
   #role:borgbackup
   - name: Install Borg backup utility
     apt: name=borgbackup state=latest
@@ -193,7 +199,7 @@
       owner: root
       group: root
       mode: 0644
-    notify: reconfigure exim4
+    notify: "update exim4 config"
 
   # TODO
   #- debconf: name='exim4-config' question='exim4/dc_local_interfaces' value='' vtype='string'
@@ -210,3 +216,8 @@
 
     - name: reconfigure exim4
       command: dpkg-reconfigure -f noninteractive exim4-config
+      listen: "update exim4 config"
+
+    - name: restart exim4
+      service: name=exim4 state=restarted
+      listen: "update exim4 config"
