@@ -45,3 +45,10 @@ Once keys are in place, running the playbook is simple.
 You may also find it handy to do a "dry run" using Ansible's check mode:
 
 ` ansible-playbook site.yml -i inventory --check `
+
+Post-deployment items:
+
+After first boot + first run, there are a few necessary tasks.
+
+* Mount /srv/efs/ and /srv/backup volumes
+* Set hostname
