@@ -17,7 +17,7 @@ Requirements
 Usage
 -----
 
-First-time usage:
+### First-time usage:
 * Install Ansible 2.2+ and sshpass on your workstation
 
 * (Optionally) Enter a Projects folder to keep it contained
@@ -30,13 +30,13 @@ First-time usage:
 
 * Follow the instructions for [the plug-services-secrets repository](https://github.com/plugorgau/plug-services-secrets)
 
-Bootstrapping new nodes:
+### Bootstrapping new nodes:
 
 To bootstrap a new node, use the bootstrap keypair when creating it, ensure it is listed in the bootstrap inventory file (bootstrap), then run the below command replacing "user" with the initial user - this should be something like "ubuntu" or "admin". If your user requires a password for login or sudo access, add --ask-pass and --ask-become-pass as appropriate.
 
 ` ansible-playbook bootstrap.yml -u user -i bootstrap `
 
-Performing a standard run:
+### Performing a standard run:
 
 Once keys are in place, running the playbook is simple.
 
@@ -46,7 +46,7 @@ You may also find it handy to do a "dry run" using Ansible's check mode:
 
 ` ansible-playbook site.yml -i inventory --check `
 
-Post-deployment items:
+### Post-deployment items:
 
 After first boot + first run, there are a few necessary tasks.
 
