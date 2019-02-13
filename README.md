@@ -46,7 +46,7 @@ You may also find it handy to do a "dry run" using Ansible's check mode:
 
 ` ansible-playbook site.yml -i inventory --check `
 
-**Please note**: Currently the initial Ansible run will fail due to the EFS Backups vol not being mounted. Do a run, then follow post-deployment items, then do a second run.
+**Please note**: Currently the initial Ansible run will fail due to the EFS Backups vol not being mounted. Do a run, then follow post-deployment items, then do a second run. You may also need to temporarily comment Certbot stuff for certbot to (ironically) succeed.
 
 ### Post-deployment items:
 
