@@ -213,10 +213,10 @@
   handlers:
     - name: reload nginx
       service: name=nginx state=reloaded
-      notify: install certbot nginx plugin
 
-    - name: install certbot nginx plugin
-      apt: name=python-certbot-nginx state=latest
+#      notify: install certbot nginx plugin
+#    - name: install certbot nginx plugin
+#      apt: name=python-certbot-nginx state=latest
 
     - name: reconfigure exim4
       command: dpkg-reconfigure -f noninteractive exim4-config

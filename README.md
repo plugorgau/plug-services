@@ -53,4 +53,5 @@ You may also find it handy to do a "dry run" using Ansible's check mode:
 After first boot + first run, there are a few necessary tasks.
 
 * Mount /srv/efs/ and /srv/backup volumes
-* Set hostname
+* Set hostname and reboot
+* Run certbot with no args, admin@plug.org.au, for bayonet, no redirects
