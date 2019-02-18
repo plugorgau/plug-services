@@ -19,6 +19,8 @@
       - molly-guard
       - links
       - eatmydata
+      - etckeeper
+      - mlocate
 
   - name: Set nano as default editor
     alternatives:
@@ -189,6 +191,12 @@
     # TODO php pool?
 
   #role:mail-mta
+  - name: Install MTA-relevant packages
+    apt: name={{ item }} state=latest
+    with_items:
+      - mutt
+      - swaks
+
   - name: Install exim4
     apt: name=exim4-daemon-light
 
