@@ -213,6 +213,17 @@
   #- debconf: name='exim4-config' question='exim4/dc_local_interfaces' value='' vtype='string'
   #  # notify: reconfigure exim4
 
+  #role:fail2ban
+  - name: Install fail2ban and dependencies
+    apt: name={{ item }} state=latest
+    with_items:
+      - fail2ban
+      - python3-pyinotify
+
+  - name: Configure fail2ban
+    template: src=fail2ban/jail.local.j2 dest=/etc/fail2ban/jail.local
+    notify: reload fail2ban
+
   #role:mumble-servers
   - name: Install Mumble
     apt: name=mumble-server state=latest
@@ -233,3 +244,6 @@
     - name: restart exim4
       service: name=exim4 state=restarted
       listen: "update exim4 config"
+
+    - name: reload fail2ban
+      service: name=fail2ban state=reloaded

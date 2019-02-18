@@ -1,0 +1,22 @@
+[DEFAULT]
+ignoreip = 127.0.0.1/8 {{ f2b_whitelist }}
+
+# Below are Debian defaults but listed here for clarity.
+# bantime  = 600
+# findtime  = 600
+# maxretry = 5
+
+# # "usedns" specifies if jails should trust hostnames in logs,
+# #   warn when DNS lookups are performed, or ignore all hostnames in logs
+# #
+# # yes:   if a hostname is encountered, a DNS lookup will be performed.
+# # warn:  if a hostname is encountered, a DNS lookup will be performed,
+# #        but it will be logged as a warning.
+# # no:    if a hostname is encountered, will not be used for banning,
+# #        but it will be logged as info.
+# # raw:   use raw value (no hostname), allow use it for no-host filters/actions (example user)
+# usedns = warn
+
+# destemail = root@localhost
+# sender = root@localhost
+# mta = sendmail
