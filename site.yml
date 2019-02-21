@@ -95,8 +95,11 @@
     apt: name=python-certbot-nginx state=latest
 
   #role:borgbackup
-  - name: Install Borg backup utility
-    apt: name=borgbackup state=latest
+  - name: Install Borg backup utility and dependencies
+    apt: name={{ item }} state=latest
+    with_items:
+      - borgbackup
+      - fuse
 
   - name: Create Borg backup script
     template:
