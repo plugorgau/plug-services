@@ -36,7 +36,7 @@ To bootstrap a new node, use the bootstrap keypair when creating it, ensure it i
 
 ` ansible-playbook bootstrap.yml -u user -i bootstrap `
 
-Once the bootstrap playbook has completed, login as the glass management user ("glass") and check out plug-services and plug-services-secrets in the home directory.
+Once the bootstrap playbook has completed, login as the glass management user ("glass") and check out plug-services and plug-services-secrets in the home directory, once again following the instructions for [the plug-services-secrets repository](https://github.com/plugorgau/plug-services-secrets).
 
 ### Performing a standard run:
 
