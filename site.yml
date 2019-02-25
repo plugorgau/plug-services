@@ -244,6 +244,12 @@
       mode: 0660
     notify: reload icecast
 
+  - name: Enable Icecast
+    lineinfile:
+      name: /etc/default/icecast2
+      regexp: '^ENABLE='
+      line: 'ENABLE=true'
+
   #TODO: Move this to its own file
   handlers:
     - name: reload nginx
