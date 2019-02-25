@@ -4,7 +4,7 @@
 # script.
 
 # Do an Ansible run to install slapd and ldap-utils
-ansible-playbook site.yml -i inventory
+#ansible-playbook site.yml -i inventory
 
 service slapd stop
 
