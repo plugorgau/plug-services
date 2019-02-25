@@ -230,7 +230,20 @@
   #role:mumble-servers
   - name: Install Mumble
     apt: name=mumble-server state=latest
-    
+
+  #role:icecast
+  - name: Install Icecast
+    apt: name=icecast2 state=latest
+
+  - name: Configure Icecast
+    template:
+      src: icecast/icecast.xml.j2
+      dest: /etc/icecast2/icecast.xml
+      owner: icecast2
+      group: icecast
+      mode: 0660
+    notify: reload icecast
+
   #TODO: Move this to its own file
   handlers:
     - name: reload nginx
@@ -250,3 +263,6 @@
 
     - name: reload fail2ban
       service: name=fail2ban state=reloaded
+
+    - name: reload icecast
+      service: name=icecast2 state=reloaded
