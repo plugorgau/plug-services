@@ -220,6 +220,10 @@
       mode: 0644
     notify: "update exim4 config"
 
+  #role:mailman
+  - name: Install Mailman
+    apt: name=mailman state=latest
+
   # TODO
   #- debconf: name='exim4-config' question='exim4/dc_local_interfaces' value='' vtype='string'
   #  # notify: reconfigure exim4
