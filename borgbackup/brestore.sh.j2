@@ -1,0 +1,40 @@
+#!/bin/bash
+
+if [ "$1" = "--mount-all" ]; then
+	MOUNT=true
+else
+	if [ "$*" != 2 ]; then
+		echo "Usage: $0 [ repotag srcpath restorepath ] | [ --mount-all ]" 2>&1
+		exit 1
+	fi
+	REPOTAG="$1"; shift
+	SRCPATH="$1"; shift
+	RESTOREPATH="$1"; shift
+	# TODO
+	exit
+fi
+
+mount /srv/backup ; mount /srv/efs
+mkdir -p /mnt/restore-power /mnt/restore-bayonet
+
+getvar_b() {
+	perl -lne '/^borg_passphrase: .([\w\s]+)/ && print $1' ~glass/plug-services-secrets/group_vars/all
+}
+
+getvar_p() {
+	perl -lne '/^borg_passphrase_power: .([\w\s]+)/ && print $1' ~glass/plug-services-secrets/group_vars/all
+}
+
+export BORG_PASSPHRASE="$(getvar_b)"
+set -x
+borg mount /srv/backup/borg-bayonet.plug.org.au /mnt/restore-bayonet
+ln -sf "`ls -1td /mnt/restore-bayonet/*| tail -1`" /tmp/latest-bayonet
+set +x
+
+export BORG_PASSPHRASE="$(getvar_p)"
+set -x
+borg mount /srv/backup/borg-power.plug.org.au /mnt/restore-power
+ln -sf "`ls -1td /mnt/restore-power/*| tail -1`" /tmp/latest-power
+rm /root/ldap-import
+ln -s /tmp/latest-power/var/backups/slapd /root/ldap-import
+set +x

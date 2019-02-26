@@ -109,6 +109,14 @@
       group: root
       mode: 0700
 
+  - name: Create Borg restore script
+    template:
+      src: borgbackup/brestore.sh.j2
+      dest: /root/bin/brestore.sh
+      owner: root
+      group: root
+      mode: 0700
+
   - name: Ensure Borg log file directory exists
     file:
       path: /var/log/borgbackup/
