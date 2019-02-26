@@ -257,6 +257,7 @@
       name: /etc/default/icecast2
       regexp: '^ENABLE='
       line: 'ENABLE=true'
+    notify: start icecast
 
   #TODO: Move this to its own file
   handlers:
@@ -277,6 +278,9 @@
 
     - name: reload fail2ban
       service: name=fail2ban state=reloaded
+
+    - name: start icecast
+      service: name=icecast2 state=started
 
     - name: reload icecast
       service: name=icecast2 state=reloaded
