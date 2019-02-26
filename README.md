@@ -56,4 +56,7 @@ After first boot + first run, there are a few necessary tasks.
 
 * Mount /srv/efs/ and /srv/backup volumes
 * Set hostname and reboot
+* Mount latest borg backup
+* Pluck an LDAP backup from backups, restore it with restoreLDAP.sh
+* Pluck /etc/letsencrypt from backups
 * Run certbot with no args, admin@plug.org.au, for bayonet, no redirects
