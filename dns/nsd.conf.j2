@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+# NSD configuration file for Debian.
+#
+# See the nsd.conf(5) man page.
+#
+# See /usr/share/doc/nsd/examples/nsd.conf for a commented
+# reference config file.
+#
+# The following line includes additional configuration files from the
+# /etc/nsd/nsd.conf.d directory.
+
+# WARNING: The glob style doesn't work yet...
+# include: "/etc/nsd/nsd.conf.d/*.conf"
+
+pattern:
+    name: plug
+    zonefile: "%s.zone"
