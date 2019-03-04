@@ -236,6 +236,11 @@
       - mailman
       - fcgiwrap
 
+  - name: Mailman - Configure mailman URLs
+    template:
+      src: mailman/mm_cfg.py.j2
+      dest: /etc/mailman/mm_cfg.py
+
   - name: Mailman - Install nginx site config
     template:
       src: mailman/lists.plug.org.au.conf
