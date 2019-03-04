@@ -80,10 +80,20 @@
   - name: DNS - Install nsd
     apt: name=nsd state=latest
 
+  - name: DNS - Configure nsd
+    template: src=dns/nsd.conf.j2 dest=/etc/nsd/nsd.conf
+    notify:
+    - restart nsd
+
   - name: DNS - Add plug.org.au zonefile
     template: src=dns/plug.org.au.zone.j2 dest=/etc/nsd/plug.org.au.zone
-#    notify:
-#    - reload nsd
+    notify:
+    - reload nsd
+
+  - name: DNS - Create zonefile list
+    template: src=dns/zone.list.j2 dest=/var/lib/nsd/zone.list
+    notify:
+    - reload nsd
 
   #role:web-servers
   - name: Install nginx
@@ -296,6 +306,12 @@
 #      notify: install certbot nginx plugin
 #    - name: install certbot nginx plugin
 #      apt: name=python-certbot-nginx state=latest
+
+    - name: reload nsd
+      service: name=nsd state=reloaded
+
+    - name: restart nsd
+      service: name=nsd state=restarted
 
     - name: reconfigure exim4
       command: dpkg-reconfigure -f noninteractive exim4-config
