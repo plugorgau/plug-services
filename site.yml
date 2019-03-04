@@ -254,7 +254,7 @@
       owner: icecast2
       group: icecast
       mode: 0660
-    notify: reload icecast
+    notify: restart icecast
 
   - name: Enable Icecast
     lineinfile:
@@ -286,5 +286,5 @@
     - name: start icecast
       service: name=icecast2 state=started
 
-    - name: reload icecast
-      service: name=icecast2 state=reloaded
+    - name: restart icecast
+      service: name=icecast2 state=restarted
