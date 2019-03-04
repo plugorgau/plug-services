@@ -250,6 +250,7 @@
     template:
       src: mailman/mm_cfg.py.j2
       dest: /etc/mailman/mm_cfg.py
+    notify: reload mailman
 
   - name: Mailman - Install nginx site config
     template:
@@ -317,6 +318,9 @@
 
     - name: restart nsd
       service: name=nsd state=restarted
+
+    - name: reload mailman
+      service: name=mailman state=reloaded
 
     - name: reconfigure exim4
       command: dpkg-reconfigure -f noninteractive exim4-config
