@@ -221,8 +221,24 @@
     notify: "update exim4 config"
 
   #role:mailman
-  - name: Install Mailman
-    apt: name=mailman state=latest
+  - name: Mailman - Install Mailman and fcgiwrap
+    apt: name={{ item }} state=latest
+    with_items:
+      - mailman
+      - fcgiwrap
+
+  - name: Mailman - Install nginx site config
+    template:
+      src: mailman/lists.plug.org.au.conf
+      dest: /etc/nginx/sites-available/lists.plug.org.au.conf
+    notify: reload nginx
+
+  - name: Enable nginx site config
+    file:
+      state: link
+      src: ../sites-available/lists.plug.org.au.conf
+      dest: /etc/nginx/sites-enabled/lists.plug.org.au.conf
+    notify: reload nginx
 
   # TODO
   #- debconf: name='exim4-config' question='exim4/dc_local_interfaces' value='' vtype='string'
