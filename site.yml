@@ -21,6 +21,7 @@
       - eatmydata
       - etckeeper
       - mlocate
+      - man-db
 
   - name: Set nano as default editor
     alternatives:
