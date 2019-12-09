@@ -1,0 +1,5 @@
+---
+# Handlers for dovecot
+
+- name: restart Dovecot
+  service: name=dovecot state=restarted

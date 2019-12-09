@@ -1,0 +1,42 @@
+---
+# Name: Install and configure Postfix
+
+- name: Install Postfix
+  apt: 
+    name:
+      - postfix
+    state: latest
+
+- name: Set our mailname
+  template:
+    src: mailname.j2
+    dest: /etc/mailname
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Configure Postfix main
+  template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart Postfix
+
+- name: Configure Postfix master
+  template:
+    src: master.cf.j2
+    dest: /etc/postfix/master.cf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart Postfix
+
+- name: Install a strong 2048-bit Diffie-Hellman group file
+  copy:
+    src: dhparams.pem
+    dest: /etc/postfix/dhparams.pem
+    owner: root
+    group: root
+    mode: '0644'

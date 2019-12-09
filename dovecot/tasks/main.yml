@@ -1,0 +1,65 @@
+---
+# Name: Install and configure a basic Dovecot installation
+
+- name: Install Dovecot
+  apt: 
+    name:
+      - dovecot-core
+    state: latest
+
+- name: Install Dovecot plugins
+  apt:
+    name:
+      - dovecot-imapd
+      - dovecot-ldap
+
+      # Future plugins
+      # - dovecot-sieve - Allow user mail filters
+      # - dovecot-managesieved - Ease management of said filters
+      # - dovecot-pop3d - Probably unneeded
+    state: latest
+
+# To be enabled when we move to Debian 10.
+#- name: Install a strong 4096-bit Diffie-Hellman group file
+#  copy:
+#    src: dh.pem
+#    dest: /etc/dovecot/dh.pem
+#    owner: root
+#    group: root
+#    mode: '0644'
+
+- name: Configure Dovecot mailbox settings 10-mail.conf
+  template:
+    src: conf.d/10-mail.conf.j2
+    dest: /etc/dovecot/conf.d/10-mail.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart Dovecot
+
+- name: Configure Dovecot SSL settings 10-ssl.conf
+  template:
+    src: conf.d/10-ssl.conf.j2
+    dest: /etc/dovecot/conf.d/10-ssl.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart Dovecot
+
+- name: Configure Dovecot Auth settings 10-auth.conf
+  template:
+    src: conf.d/10-auth.conf.j2
+    dest: /etc/dovecot/conf.d/10-auth.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart Dovecot
+
+- name: Configure Dovecot master settings 10-master.conf
+  template:
+    src: conf.d/10-master.conf.j2
+    dest: /etc/dovecot/conf.d/10-master.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart Dovecot

@@ -1,0 +1,7 @@
+---
+# Handlers for exim4
+
+- name: run update-exim4.conf
+  command: /usr/sbin/update-exim4.conf
+
+# TODO: Trigger exim4 restart?

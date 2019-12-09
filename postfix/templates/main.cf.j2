@@ -1,0 +1,208 @@
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+
+# Debian specific:  Specifying a file name will cause the first
+# line of that file to be used as the name.  The Debian default
+# is /etc/mailname.
+# B: TODO - is this needed? should not be
+#myorigin = /etc/mailname
+
+# This is possibly better:
+#smtpd_banner = $myhostname ESMTP
+smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+
+# Uncomment the next line to generate "delayed mail" warnings
+#delay_warning_time = 4h
+
+readme_directory = no
+
+# See http://www.postfix.org/COMPATIBILITY_README.html -- default to 2 on
+# fresh installs.
+compatibility_level = 2
+
+# TLS parameters
+smtpd_tls_cert_file = /etc/letsencrypt/live/mail.windowpa.in/cert.pem
+smtpd_tls_key_file = /etc/letsencrypt/live/mail.windowpa.in/privkey.pem
+smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
+smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
+smtpd_use_tls=yes
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+# See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
+# information on enabling SSL in the smtp client.
+
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+myhostname = sirius.windowpa.in
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = /etc/mailname
+mydestination = $myhostname, windowpa.in, sirius.windowpa.in, localhost.windowpa.in, localhost
+# This is possibly better:
+# mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+relayhost = 
+# This is possibly better:
+# mynetworks = 127.0.0.0/8
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+#mailbox_size_limit = 0 - we set this down further
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = all
+
+##############################
+# Things we explicitly added #
+##############################
+# Set mailbox format
+# Use Maildir format instead of default mail format
+home_mailbox = Maildir/
+
+# limit an email size 10M
+message_size_limit = 10485760
+# limit mailbox 1G
+mailbox_size_limit = 1073741824
+
+# SMTP-Auth settings
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname
+smtpd_recipient_restrictions = permit_mynetworks, permit_auth_destination, permit_sasl_authenticated, reject
+
+# Use non-default Diffie-Hellman Prime
+# B: TODO - THIS MAY BREAK SMTP
+#smtpd_tls_dh1024_param_file = /etc/postfix/dhparams.pem
+
+# Disable bad ciphers
+# B: TODO - THIS MAY BREAK SMTP
+#smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CBC3-SHA, KRB5-DES, CBC3-SHA
+
+# enable outbound TLS to services that support it
+# (opportunistic TLS)
+smtp_tls_security_level = may
+
+# scan content with clamav
+content_filter = scan:127.0.0.1:10026
+
+# OpenDKIM stuff
+milter_default_action = accept
+milter_protocol = 6
+# from inside the chroot, the socket will be in /var/run/opendkim 
+smtpd_milters = unix:/var/run/opendkim/opendkim.sock
+non_smtpd_milters = unix:/var/run/opendkim/opendkim.sock
+
+#####################################
+# Things we might be able to remove #
+#####################################
+
+
+# The command_directory parameter specifies the location of all
+# postXXX commands.
+#
+#command_directory = /usr/sbin
+
+# The daemon_directory parameter specifies the location of all Postfix
+# daemon programs (i.e. programs listed in the master.cf file). This
+# directory must be owned by root.
+#
+#daemon_directory = /usr/lib/postfix/sbin
+
+# The data_directory parameter specifies the location of Postfix-writable
+# data files (caches, random numbers). This directory must be owned
+# by the mail_owner account (see below).
+#
+#data_directory = /var/lib/postfix
+
+# skipping mail_owner as we did not specify it earlier
+
+# B: TODO - We should probably specify mydomain even though it's optional
+# The mydomain parameter specifies the local internet domain name.
+# The default is to use $myhostname minus the first component.
+# $mydomain is used as a default value for many other configuration
+# parameters.
+#
+#mydomain = domain.tld
+
+# The unknown_local_recipient_reject_code specifies the SMTP server
+# response code when a recipient domain matches $mydestination or
+# ${proxy,inet}_interfaces, while $local_recipient_maps is non-empty
+# and the recipient address or address local-part is not found.
+#
+# The default setting is 550 (reject mail) but it is safer to start
+# with 450 (try again later) until you are certain that your
+# local_recipient_maps settings are OK.
+#
+#unknown_local_recipient_reject_code = 550
+
+# The alias_maps parameter specifies the list of alias databases used
+# by the local delivery agent. The default list is system dependent.
+#
+# On systems with NIS, the default is to search the local alias
+# database, then the NIS alias database. See aliases(5) for syntax
+# details.
+#
+# If you change the alias database, run "postalias /etc/aliases" (or
+# wherever your system stores the mail alias file), or simply run
+# "newaliases" to build the necessary DBM or DB file.
+#
+# It will take a minute or so before changes become visible.  Use
+# "postfix reload" to eliminate the delay.
+#
+#alias_maps = dbm:/etc/aliases
+#alias_maps = hash:/etc/aliases
+#alias_maps = hash:/etc/aliases, nis:mail.aliases
+#alias_maps = netinfo:/aliases
+
+# The alias_database parameter specifies the alias database(s) that
+# are built with "newaliases" or "sendmail -bi".  This is a separate
+# configuration parameter, because alias_maps (see above) may specify
+# tables that are not necessarily all under control by Postfix.
+#
+#alias_database = dbm:/etc/aliases
+#alias_database = dbm:/etc/mail/aliases
+#alias_database = hash:/etc/aliases
+#alias_database = hash:/etc/aliases, hash:/opt/majordomo/aliases
+
+# The debugger_command specifies the external command that is executed
+# when a Postfix daemon program is run with the -D option.
+#
+# Use "command .. & sleep 5" so that the debugger can attach before
+# the process marches on. If you use an X-based debugger, be sure to
+# set up your XAUTHORITY environment variable before starting Postfix.
+#
+#debugger_command =
+#         PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
+#         ddd $daemon_directory/$process_name $process_id & sleep 5
+
+# sendmail_path: The full pathname of the Postfix sendmail command.
+# This is the Sendmail-compatible mail posting interface.
+#
+#sendmail_path = /usr/sbin/postfix
+
+# newaliases_path: The full pathname of the Postfix newaliases command.
+# This is the Sendmail-compatible command to build alias databases.
+#
+#newaliases_path = /usr/bin/newaliases
+
+# mailq_path: The full pathname of the Postfix mailq command.  This
+# is the Sendmail-compatible mail queue listing command.
+#
+#mailq_path = /usr/bin/mailq
+
+# setgid_group: The group for mail submission and queue management
+# commands.  This must be a group name with a numerical group ID that
+# is not shared with other accounts, not even with the Postfix account.
+#
+#setgid_group = postdrop
+
+# In the left-hand side, specify a bare username, an @domain.tld
+# wild-card, or specify a user@domain.tld address.
+#
+# The top one is the one recommended by the tutorial...
+#local_recipient_maps = unix:passwd.byname $alias_maps
+#local_recipient_maps = proxy:unix:passwd.byname $alias_maps
+#local_recipient_maps =

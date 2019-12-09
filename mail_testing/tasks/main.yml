@@ -1,0 +1,11 @@
+---
+# Name: Install and configure some helpful packages for debugging mail servers.
+
+- name: Install mail testing utils
+  apt: 
+    name:
+      - mutt
+      - swaks
+      - curl
+      - netcat
+    state: latest

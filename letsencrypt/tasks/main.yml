@@ -1,0 +1,9 @@
+---
+# Name: Install and configure Let's Encrypt Certbot for nginx
+
+- name: Install Certbot + nginx plugin
+  apt: 
+    name:
+      - certbot
+      - python-certbot-nginx
+    state: latest

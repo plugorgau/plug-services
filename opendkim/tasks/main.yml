@@ -1,0 +1,57 @@
+---
+# Name: Install and configure OpenDKIM
+
+- name: Install OpenDKIM + associated tools
+  apt: 
+    name:
+      - opendkim
+      - opendkim-tools
+    state: latest
+
+# TODO: Copy keys across and ensure correct permissions
+
+- name: Create socket directory
+  file:
+    path: /var/spool/postfix/var/run/opendkim
+    state: directory
+    owner: opendkim
+    group: opendkim
+    mode: '0710'
+
+- name: Configure OpenDKIM
+  template:
+    src: opendkim.conf.j2
+    dest: /etc/opendkim.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: OpenDKIM - Configure key table
+  template:
+    src: keytable.j2
+    dest: /etc/dkimkeys/keytable
+    owner: root
+    group: opendkim
+    mode: '0644'
+
+- name: OpenDKIM - Configure signing table
+  template:
+    src: signingtable.j2
+    dest: /etc/dkimkeys/signingtable
+    owner: root
+    group: opendkim
+    mode: '0644'
+
+- name: OpenDKIM - Configure trusted hosts
+  template:
+    src: trustedhosts.j2
+    dest: /etc/dkimkeys/trustedhosts
+    owner: root
+    group: opendkim
+    mode: '0644'
+
+- name: Add postfix user to opendkim group
+  user:
+    name: postfix
+    groups: opendkim
+    append: yes

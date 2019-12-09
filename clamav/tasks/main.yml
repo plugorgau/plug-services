@@ -1,0 +1,33 @@
+---
+# Name: Install and configure clamav and clamsmtp
+# We should probably break this out into smaller roles later
+# but in the interest of "getting it done" I've skipped that
+
+#role:clamav
+- name: Install clamav and clamav-daemon
+  apt: 
+    name:
+      - clamav
+      - clamav-daemon
+    state: latest
+
+  # This task may not be necessary as we don't actually change anything
+- name: Configure clamav's freshclam definition updater
+  template:
+    src: freshclam.conf.j2
+    dest: /etc/clamav/freshclam.conf
+    owner: clamav
+    group: adm
+    mode: '0444'
+
+#role:clamsmtp
+- name: Install clamsmtp daemon
+  apt: name=clamsmtp state=latest
+
+- name: Configure clamsmtp
+  template:
+    src: clamsmtpd.conf.j2
+    dest: /etc/clamsmtpd.conf
+    owner: root
+    group: root
+    mode: '0644'

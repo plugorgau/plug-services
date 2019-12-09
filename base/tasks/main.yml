@@ -1,0 +1,17 @@
+---
+# Name: Install and configure some base packages
+
+- name: Install essential utils
+  apt: 
+    name:
+      - openssh-server
+      - nano
+      - joe
+      - git
+      - screen
+      - tmux
+      - molly-guard
+      - python-apt
+      - man-db
+      - curl
+    state: latest
