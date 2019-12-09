@@ -1,5 +1,7 @@
 ---
 # file: site.yml
+# TODO: merge this with Glass mail_servers.yml
+
 - hosts: web_servers
   remote_user: '{{ glass_user }}'
   become: yes
@@ -12,17 +14,17 @@
       - mutt
       - swaks
 
-  - name: Install exim4
-    apt: name=exim4-daemon-light
+#  - name: Install exim4
+#    apt: name=exim4-daemon-light
 
-  - name: Preconfigure exim4
-    template:
-      src: mail-mta/update-exim4.conf.conf.j2
-      dest: /etc/exim4/update-exim4.conf.conf
-      owner: root
-      group: root
-      mode: 0644
-    notify: "update exim4 config"
+#  - name: Preconfigure exim4
+#    template:
+#      src: mail-mta/update-exim4.conf.conf.j2
+#      dest: /etc/exim4/update-exim4.conf.conf
+#      owner: root
+#      group: root
+#      mode: 0644
+#    notify: "update exim4 config"
 
   #role:mailman
   - name: Mailman - Install Mailman and fcgiwrap
@@ -58,10 +60,10 @@
     - name: reload mailman
       service: name=mailman state=reloaded
 
-    - name: reconfigure exim4
-      command: dpkg-reconfigure -f noninteractive exim4-config
-      listen: "update exim4 config"
+#    - name: reconfigure exim4
+#      command: dpkg-reconfigure -f noninteractive exim4-config
+#      listen: "update exim4 config"
 
-    - name: restart exim4
-      service: name=exim4 state=restarted
-      listen: "update exim4 config"
+#    - name: restart exim4
+#      service: name=exim4 state=restarted
+#      listen: "update exim4 config"
