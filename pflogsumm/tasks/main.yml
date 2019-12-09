@@ -1,5 +1,5 @@
 ---
-# Name: Install and configure pgflogsumm
+# Name: Install and configure pflogsumm
 
-- name: Install pgflogsumm
-  apt: name=pgflogsumm state=latest
+- name: Install pflogsumm
+  apt: name=pflogsumm state=latest
