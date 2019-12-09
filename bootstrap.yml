@@ -30,11 +30,12 @@
     copy: src='secrets/ssh/bayonet-git-read-only' dest='/home/glass/.ssh/id_rsa' mode=0600 owner=glass group=glass
 
   - name: Ansible - install key packages
-    apt: name={{ item }} state=latest
-    with_items:
-      - ansible
-      - python-apt
-      - git
+    apt:
+      name:
+        - ansible
+        - python-apt
+        - git
+      state: latest
 
 # TODO: remove bootstrap key from authorized hosts
 
