@@ -80,23 +80,24 @@
     notify:
     - reload nsd
 
-  #role:web-servers
-  - name: Install nginx
-    apt: name=nginx state=latest
+  #role:nginx
+  #- name: Install nginx
+  #  apt: name=nginx state=latest
 
-  - name: Configure nginx
-    template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
-    notify:
-    - reload nginx
+  #- name: Configure nginx
+  #  template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
+  #  notify:
+  #  - reload nginx
 
-  - name: Configure default webpage
-    template: src=nginx/default.html dest=/var/www/html/index.html
+  #- name: Configure default webpage
+  #  template: src=nginx/default.html dest=/var/www/html/index.html
 
-  - name: Install certbot
-    apt: name=certbot state=latest
+  #role:letsencrypt
+  #- name: Install certbot
+  #  apt: name=certbot state=latest
 
-  - name: Install certbot nginx plugin
-    apt: name=python-certbot-nginx state=latest
+  #- name: Install certbot nginx plugin
+  #  apt: name=python-certbot-nginx state=latest
 
   #role:borgbackup
   - name: Install Borg backup utility and dependencies
