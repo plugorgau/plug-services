@@ -16,13 +16,11 @@
     group: root
     mode: '0644'
 
-- name: Configure SpamAssassin default settings
-  template:
-    src: spamassassin-default.j2
-    dest: /etc/default/spamassassin
-    owner: root
-    group: root
-    mode: '0644'
+- name: Enable SpamAssassin nightly cron
+  lineinfile:
+    path: /etc/default/spamassassin
+    regexp: '^CRON='
+    line: CRON=1
 
 - name: Enable and start SpamAssassin service
   systemd:
