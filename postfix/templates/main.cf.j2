@@ -25,8 +25,8 @@ readme_directory = no
 compatibility_level = 2
 
 # TLS parameters
-smtpd_tls_cert_file = /etc/letsencrypt/live/mail.windowpa.in/cert.pem
-smtpd_tls_key_file = /etc/letsencrypt/live/mail.windowpa.in/privkey.pem
+smtpd_tls_cert_file = /etc/letsencrypt/live/mail.po1.plug.org.au/cert.pem
+smtpd_tls_key_file = /etc/letsencrypt/live/mail.po1.plug.org.au/privkey.pem
 smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
 smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
 smtpd_use_tls=yes
@@ -37,11 +37,11 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 # information on enabling SSL in the smtp client.
 
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-myhostname = sirius.windowpa.in
+myhostname = edison.plug.org.au
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
-mydestination = $myhostname, windowpa.in, sirius.windowpa.in, localhost.windowpa.in, localhost
+mydestination = $myhostname, plug.org.au, po1.plug.org.au, edison.plug.org.au, edison.po1.plug.org.au, localhost.plug.org.au, localhost.po1.plug.org.au, localhost
 # This is possibly better:
 # mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 relayhost = 
