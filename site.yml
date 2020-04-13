@@ -81,21 +81,22 @@
     - reload nsd
 
   #role:nginx
+  # Currently disabled as handled in/by mail_servers
   #- name: Install nginx
   #  apt: name=nginx state=latest
-
+  #
   #- name: Configure nginx
   #  template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
   #  notify:
   #  - reload nginx
-
+  #
   #- name: Configure default webpage
   #  template: src=nginx/default.html dest=/var/www/html/index.html
 
   #role:letsencrypt
   #- name: Install certbot
   #  apt: name=certbot state=latest
-
+  #
   #- name: Install certbot nginx plugin
   #  apt: name=python-certbot-nginx state=latest
 
