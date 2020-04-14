@@ -40,6 +40,13 @@
       mode: 0700
       recurse: yes
 
+  - name: Apt - enable stretch-backports
+    apt_repository:
+      repo: "deb http://mirrors.digitalocean.com/debian stretch-backports main contrib non-free"
+      state: present
+      filename: stretch-backports
+      update_cache: yes
+
   #role:efs
   # This temporarily sets up our EFS mounts in fstab.
   # This will cause mount failures on your machine if you do not have access to our AWS VPC as it tries to mount on boot.
@@ -62,23 +69,34 @@
       - /srv/backup
 
   #role:dns-servers
-  - name: DNS - Install nsd
-    apt: name=nsd state=latest
+  - name: DNS - Install Knot DNS
+    apt: name=knot state=present
 
-  - name: DNS - Configure nsd
-    template: src=dns/nsd.conf.j2 dest=/etc/nsd/nsd.conf
-    notify:
-    - restart nsd
+  - name: DNS - Configure Knot DNS
+    template:
+      src: dns/knot.conf.j2
+      dest: /etc/knot/knot.conf
+      owner: knot
+      group: knot
+      mode: '0640'
 
-  - name: DNS - Add plug.org.au zonefile
-    template: src=dns/plug.org.au.zone.j2 dest=/etc/nsd/plug.org.au.zone
-    notify:
-    - reload nsd
+  # We were initially testing with nsd
+  # but are switching to KnotDNS
+  #- name: DNS - Install nsd
+  #  apt: name=nsd state=latest
 
-  - name: DNS - Create zonefile list
-    template: src=dns/zone.list.j2 dest=/var/lib/nsd/zone.list
-    notify:
-    - reload nsd
+  #- name: DNS - Configure nsd
+  # template: src=dns/nsd.conf.j2 dest=/etc/nsd/nsd.conf
+  # notify:
+  # - restart nsd
+
+  #- name: DNS - Create zonefile list
+  #  template: src=dns/zone.list.j2 dest=/var/lib/nsd/zone.list
+  #  notify:
+  #  - reload nsd
+
+  - name: DNS - Add example plug.org.au zonefile
+    template: src=dns/plug.org.au.example.zone.j2 dest=/etc/knot/plug.org.au.example.zone owner=knot group=knot mode=0644
 
   #role:nginx
   # Currently disabled as handled in/by mail_servers
@@ -94,11 +112,17 @@
   #  template: src=nginx/default.html dest=/var/www/html/index.html
 
   #role:letsencrypt
-  #- name: Install certbot
-  #  apt: name=certbot state=latest
-  #
-  #- name: Install certbot nginx plugin
-  #  apt: name=python-certbot-nginx state=latest
+  - name: Install certbot
+    apt: name=certbot state=latest
+
+  - name: Install certbot nginx plugin
+    apt: name=python-certbot-nginx state=latest
+
+  - name: Install certbot DNS RFC2136 plugin
+    apt:
+      name: python3-certbot-dns-rfc2136
+      state: present
+      default_release: stretch-backports
 
   #role:borgbackup
   - name: Install Borg backup utility and dependencies
