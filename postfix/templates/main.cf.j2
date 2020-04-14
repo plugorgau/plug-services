@@ -89,11 +89,11 @@ smtp_tls_security_level = may
 content_filter = scan:127.0.0.1:10026
 
 # OpenDKIM stuff
-#milter_default_action = accept
-#milter_protocol = 6
+milter_default_action = accept
+milter_protocol = 6
 # from inside the chroot, the socket will be in /var/run/opendkim 
-#smtpd_milters = unix:/var/run/opendkim/opendkim.sock
-#non_smtpd_milters = unix:/var/run/opendkim/opendkim.sock
+smtpd_milters = unix:/var/run/opendkim/opendkim.sock
+non_smtpd_milters = unix:/var/run/opendkim/opendkim.sock
 
 #####################################
 # Things we might be able to remove #
