@@ -16,6 +16,13 @@ log:
   - target: syslog
     any: info
 
+key:
+    # Used by Let's Encrypt to update ACME challenges
+    # {{ dns_tsig_plugle }}
+  - id: plugle
+    algorithm: hmac-sha256
+    secret: {{ dns_tsig_plugle_short }}
+
 remote:
     # ns1.whiteitsolutions.com.au.
   - id: ns1
@@ -29,6 +36,10 @@ acl:
   - id: acl_secondary
     address: [45.77.49.133, 172.104.191.155]
     action: transfer
+
+  - id: acme_update_acl
+    action: [update, transfer]
+    key: plugle
 
 template:
 #  - id: default
@@ -44,3 +55,11 @@ zone:
     file: "/etc/knot/plug.org.au.zone"
     notify: [ns1, ns4]
     acl: acl_secondary
+
+  - domain: _acme-challenge.plug.org.au
+    file: "/etc/knot/_acme-challenge.plug.org.au.zone"
+    acl: acme_update_acl
+
+  - domain: _acme-challenge.po1.plug.org.au
+    file: "/etc/knot/_acme-challenge.po1.plug.org.au.zone"
+    acl: acme_update_acl
