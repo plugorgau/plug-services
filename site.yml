@@ -171,6 +171,22 @@
       group: adm
       mode: 0755
 
+  - name: SSH - Install borg private key per machine
+    template:
+      src: secrets/ssh/borgkey-{{ ansible_hostname }}
+      dest: /root/.ssh/borgkey
+      owner: root
+      group: root
+      mode: 0600
+
+  - name: SSH - Install borg public key per machine
+    template:
+      src: secrets/ssh/borgkey-{{ ansible_hostname }}.pub
+      dest: /root/.ssh/borgkey.pub
+      owner: root
+      group: root
+      mode: 0600
+
   #role:plug-website
   - name: Install jekyll
     apt: name=jekyll state=latest
