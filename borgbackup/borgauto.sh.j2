@@ -8,12 +8,16 @@ exec &> >(tee -a "/var/log/borgbackup/borg-auto.$(date +%Y%m%d-%H%M).log")
 
 # Setting this, so the repo does not need to be given on the commandline:
 #export BORG_REPO=ssh://borg-power@bayonet.plug.org.au:22/srv/backup/borg-{{ ansible_nodename }}
-export BORG_REPO=/srv/backup/borg-{{ ansible_nodename }}
+#export BORG_REPO=/srv/backup/borg-{{ ansible_nodename }}
+export BORG_REPO=ssh://19678@ch-s012.rsync.net:22/data2/home/19678/ruby/
 
 # Setting this, so you won't be asked for your repository passphrase:
 export BORG_PASSPHRASE='{{ borg_passphrase }}'
 # or this to ask an external program to supply the passphrase:
 #export BORG_PASSCOMMAND='pass show backup'
+
+# Setting this to enable SSH key access
+export BORG_RSH='ssh -i /root/.ssh/borgkey'
 
 # Init once only
 #borg init --encryption=repokey ; exit
