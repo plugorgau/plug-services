@@ -44,6 +44,7 @@ ionice -c3 borg create              \
     --exclude '/home/pot_homes/spamfilter/Maildir' \
     --exclude '/home/spamfilter/Maildir' \
     --exclude '/var/log/borgbackup/'\
+    --exclude '/var/lib/apt/lists/' \
     --exclude '/var/cache/'         \
     --exclude '/var/tmp/'           \
     --exclude '/srv/efs/'           \
