@@ -171,18 +171,6 @@
       group: adm
       mode: 0755
 
-  - name: Users - Create the 'borg-power' user for backups
-    user:
-      name: borg-power
-      shell: /bin/bash
-      home: /srv/backup/borg-power
-      createhome: yes
-      uid: 10001
-      comment: "power backup user"
-
-  - name: SSH - Add borg-power public key
-    authorized_key: user='borg-power' key="{{ lookup('file', 'secrets/ssh/borg-power.pub') }}"
-
   #role:plug-website
   - name: Install jekyll
     apt: name=jekyll state=latest
