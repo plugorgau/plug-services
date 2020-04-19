@@ -2,7 +2,7 @@ $TTL 43200	; 12 hours
 $TTL 3600 ; 1 hour
 $TTL 60 ; 1 minute
 @		IN SOA	ns1.plug.org.au. hostmaster.plug.org.au. (
-				2019030400 ; serial
+				2020041901 ; serial
 				4800       ; refresh (1 hour 20 minutes)
 				900        ; retry (15 minutes)
 				2419200    ; expire (4 weeks)
@@ -14,35 +14,49 @@ $TTL 60 ; 1 minute
 			A	54.252.97.56	
 			MX	5 power.plug.org.au.
 			TXT	"v=spf1 a ip4:54.252.97.56 mx ~all"
+
+; sub-domain for ACME DNS-01 validations - dynamic entries only
+_acme-challenge		NS	ns1.plug.org.au.
+_acme-challenge.po1	NS	ns1.plug.org.au.
+
+; ns1 = edison's floating IP
+ns1			A	188.166.198.61
+
 rt			MX	5 power.plug.org.au.
 rt			A	54.252.97.56	
-; ns1 = Power
-ns1			A	54.252.97.56
+
 power			A	54.252.97.56 
 			TXT	"Amazon EC2 in Sydney"
 			LOC	33 55 50 S 151 11 49 E 20m
 
+edison			A       159.65.142.85
+                        TXT     "DO droplet-10 2GiB in Singapore"
+			TXT	"v=spf1 a mx ~all"
+edison.po1		A       159.65.142.85
+                        TXT     "DO droplet-10 2GiB in Singapore"
+			TXT	"v=spf1 a mx ~all"
+mail.po1		CNAME	edison.plug.org.au.
+po1			A       159.65.142.85
+po1			TXT	"v=spf1 a mx ~all"
+_dmarc.po1		TXT	"v=DMARC1; p=none; rua=mailto:z50uofjn@ag.ap.dmarcian.com;"
+mail._domainkey.po1	TXT	( "v=DKIM1; h=sha256; k=rsa; " "p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqbjwoKyMhu0e+SU9GAlIk6HrtCAxXEDOxNeTsTCGK8T4H24EQvQ1gowp4huauvhlAAhCm/EuzAHWpbEkugxGj9sRDisbjh6Zkz6nXzmftF3GWjpKq2uDgYju4xRycyVzDOIQEyKjgoCLtNy444bIzGnrI9UDgYlzgWMbjPYxOEO//9wEkQJg+ReNB9pEq5d5QiC5K2XbZF9nBQ" "0Y3JwNJ8tT1TuaFQTzJsYupQSehZqEuV6jaUa0ZyosfpD4QwBQwuC0d8f321NInsIU82Jb3Pl7Ccyg3ZOaKCk0u0L+BPodPn9KRUumKE2NaUGaqOL15YXTKGh0izsnh5p4p7LWBwIDAQAB" )  ; ----- DKIM key mail for po1.plug.org.au
+po1			MX	5 edison.plug.org.au.
+mail 			CNAME	edison.plug.org.au.
+services 		CNAME	edison.plug.org.au.
+ugmm                    CNAME   edison.plug.org.au.
+
 bayonet                 A       13.55.13.28
                         TXT     "t3.micro Amazon EC2 in Sydney"
 			TXT	"v=spf1 a mx ~all"
-lpt                     A       128.199.161.145
-                        TXT     "DO droplet sg"
-
-byron.dev               A       54.206.117.237
-                        TXT     "temporary hack day machine"
-kyle.dev                A       52.63.232.41
-                        TXT     "temporary hack day machine"
-ivan.dev                A       13.236.52.93
-                        TXT     "temporary hack day machine"
 
 ; Services
 lists			CNAME   power	
 lists2			CNAME   bayonet	
 www			CNAME	power
-irc			CNAME	irc.uniirc.com.
+; Some round-robin A records not running, pinning to mussel ; irc			CNAME	irc.uniirc.com.
+irc			CNAME	mussel.ucc.asn.au.
 mumble			CNAME	power
 icecast			CNAME	power
 secure			CNAME	power
-services                CNAME   bayonet
 lca2014			CNAME	userconf.osmahi.com.
 slack			A	64.137.233.248
