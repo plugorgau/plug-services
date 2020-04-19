@@ -124,6 +124,22 @@
       state: present
       default_release: stretch-backports
 
+  - name: Create certbot secrets and config folder
+    file:
+      path: /root/.secrets/certbot/
+      state: directory
+      owner: root
+      group: root
+      mode: '0600'
+
+  - name: Configure certbot rfc2136 plugin
+    template:
+      src: letsencrypt/rfc2136.ini.j2
+      dest: /root/.secrets/certbot/rfc2136.ini
+      owner: root
+      group: root
+      mode: '0600'
+
   #role:borgbackup
   - name: Install Borg backup utility and dependencies
     apt: name={{ item }} state=latest
