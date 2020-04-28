@@ -14,27 +14,22 @@ else
 	exit
 fi
 
-mount /srv/backup ; mount /srv/efs
-mkdir -p /mnt/restore-power /mnt/restore-bayonet
+mkdir -p /mnt/restore
 
 getvar_b() {
 	perl -lne '/^borg_passphrase: .([\w\s]+)/ && print $1' ~glass/plug-services-secrets/group_vars/all
 }
 
-getvar_p() {
-	perl -lne '/^borg_passphrase_power: .([\w\s]+)/ && print $1' ~glass/plug-services-secrets/group_vars/all
-}
-
+export BORG_REPO=ssh://19678@ch-s012.rsync.net:22/data2/home/19678/ruby/
+export BORG_RSH="ssh -i /root/.ssh/borgkey"
 export BORG_PASSPHRASE="$(getvar_b)"
 set -x
-borg mount /srv/backup/borg-bayonet.plug.org.au /mnt/restore-bayonet
-ln -sf "`ls -1td /mnt/restore-bayonet/*| tail -1`" /tmp/latest-bayonet
-set +x
+borg mount $BORG_REPO /mnt/restore
+for HOST in bayonet edison power; do
+  ln -sf "$(find /mnt/restore -maxdepth 1 -name "${HOST}*"|sort -rn|head -1)" "/tmp/latest-$HOST"
+done
 
-export BORG_PASSPHRASE="$(getvar_p)"
-set -x
-borg mount /srv/backup/borg-power.plug.org.au /mnt/restore-power
-ln -sf "`ls -1td /mnt/restore-power/*| tail -1`" /tmp/latest-power
 rm /root/ldap-import
 ln -s /tmp/latest-power/var/backups/slapd /root/ldap-import
+
 set +x
