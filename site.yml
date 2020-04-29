@@ -188,8 +188,9 @@
       mode: 0600
 
   #role:plug-website
-  - name: Install jekyll
-    apt: name=jekyll state=latest
+  # jekyll install disabled temporarily until we move to buster
+  #  - name: Install jekyll
+  #    apt: name=jekyll state=latest
 
   - name: Use Git to checkout latest plug website
     git: version="master" repo="https://github.com/plugorgau/plugorgau.github.io.git" dest="/home/glass/plugorgau.github.io/"
@@ -197,7 +198,7 @@
     register: plug_website_git
 
   - name: Use Jekyll to build plug website
-    command: "jekyll build"
+    shell: "GEM_HOME=/home/glass/gems /home/glass/gems/bin/jekyll build"
     args: 
       chdir: /home/glass/plugorgau.github.io/
     become_user: glass
