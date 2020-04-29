@@ -18,7 +18,7 @@
 
 - name: Enable SpamAssassin nightly cron
   lineinfile:
-    path: /etc/default/spamassassin
+    dest: /etc/default/spamassassin
     regexp: '^CRON='
     line: CRON=1
 
