@@ -23,10 +23,20 @@ getvar_b() {
 export BORG_REPO=ssh://19678@ch-s012.rsync.net:22/data2/home/19678/ruby/
 export BORG_RSH="ssh -i /root/.ssh/borgkey"
 export BORG_PASSPHRASE="$(getvar_b)"
+
 set -x
-borg mount $BORG_REPO /mnt/restore
+if mountpoint -q /mnt/restore; then
+  echo "$0: Already mounted, umount'ing: /mnt/restore" 1>&2
+  fusermount -u /mnt/restore
+fi
+if ! borg mount $BORG_REPO /mnt/restore; then
+  echo "$0: Mount failed: /mnt/restore" 1>&2
+  exit 1
+fi
+
 for HOST in bayonet edison power; do
-  ln -sf "$(find /mnt/restore -maxdepth 1 -name "${HOST}*"|sort -rn|head -1)" "/tmp/latest-$HOST"
+  rm -f "/tmp/latest-$HOST"
+  ln -s "$(find /mnt/restore -maxdepth 1 -name "${HOST}*"|sort -rn|head -1)" "/tmp/latest-$HOST"
 done
 
 rm /root/ldap-import
