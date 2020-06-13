@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo "Learning Spam_true as spam..."
+sa-learn --no-sync --spam /home/glass/Maildir/.spam-true/{cur,new}
+echo "Learning Spam_false as not spam..."
+sa-learn --no-sync --ham /home/glass/Maildir/.spam-false/{cur,new}
+sa-learn --sync
+
