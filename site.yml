@@ -47,27 +47,6 @@
       filename: stretch-backports
       update_cache: yes
 
-  #role:efs
-  # This temporarily sets up our EFS mounts in fstab.
-  # This will cause mount failures on your machine if you do not have access to our AWS VPC as it tries to mount on boot.
-  # Fortunately this degrades fairly gracefully on Ubuntu 16.04 and Debian 8 and later, still allowing the machine to
-  # finish booting, but you shouldn't run this on a machine you care a lot about.
-  # "auto" mounts currently failing on boot, w/90 second timeout. autofs might be a solution.
-
-  - name: Install NFS utilities
-    apt: name=nfs-common state=latest
-
-#  - name: Ensure EFS mount points exist
-#    file:
-#      path: "{{ item }}"
-#      state: directory
-#      owner: root
-#      group: root
-#      mode: 0755
-#    with_items:
-#      - /srv/efs
-#      - /srv/backup
-
   #role:dns-servers
   - name: DNS - Install Knot DNS
     apt: name=knot state=present
@@ -79,21 +58,6 @@
       owner: knot
       group: knot
       mode: '0640'
-
-  # We were initially testing with nsd
-  # but are switching to KnotDNS
-  #- name: DNS - Install nsd
-  #  apt: name=nsd state=latest
-
-  #- name: DNS - Configure nsd
-  # template: src=dns/nsd.conf.j2 dest=/etc/nsd/nsd.conf
-  # notify:
-  # - restart nsd
-
-  #- name: DNS - Create zonefile list
-  #  template: src=dns/zone.list.j2 dest=/var/lib/nsd/zone.list
-  #  notify:
-  #  - reload nsd
 
   - name: DNS - Add example plug.org.au zonefile
     template: src=dns/plug.org.au.example.zone.j2 dest=/etc/knot/plug.org.au.example.zone owner=knot group=knot mode=0644
