@@ -63,6 +63,7 @@
       owner: knot
       group: knot
       mode: '0640'
+    notify: reload knot
 
   - name: DNS - Add example plug.org.au zonefile
     template: src=dns/plug.org.au.example.zone.j2 dest=/etc/knot/plug.org.au.example.zone owner=knot group=knot mode=0644
@@ -322,11 +323,8 @@
 #    - name: install certbot nginx plugin
 #      apt: name=python-certbot-nginx state=latest
 
-    - name: reload nsd
-      service: name=nsd state=reloaded
-
-    - name: restart nsd
-      service: name=nsd state=restarted
+    - name: reload knot
+      service: name=knot state=reloaded
 
     - name: reload mailman
       service: name=mailman state=reloaded
