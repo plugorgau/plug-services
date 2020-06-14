@@ -5,4 +5,4 @@
   service: name=postfix state=restarted
 
 - name: run postalias
-  shell: "postalias"
+  shell: "postalias /etc/aliases"
