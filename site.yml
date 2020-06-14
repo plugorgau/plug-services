@@ -22,6 +22,7 @@
       - etckeeper
       - mlocate
       - man-db
+      - parallel
 
   - name: Set nano as default editor
     alternatives:
