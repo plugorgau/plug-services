@@ -23,6 +23,10 @@
       - mlocate
       - man-db
 
+  - name: Set timezone
+    timezone:
+      name: Australia/Perth
+
   - name: Set nano as default editor
     alternatives:
       name: editor
