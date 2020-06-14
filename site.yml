@@ -250,6 +250,17 @@
   - name: Install Mumble
     apt: name=mumble-server state=latest
 
+  - name: Set mumble SSL
+    # https://stackoverflow.com/questions/24334115/ansible-lineinfile-for-several-lines
+    lineinfile:
+      name: /etc/mumble-server.ini
+      regexp: "^#? *{{ item.key | regex_escape() }}="
+      line: "{{ item.key }}={{ item.value }}"
+    with_dict:
+      'sslCert': '/etc/letsencrypt/live/plug.org.au/fullchain.pem'
+      'sslKey': '/etc/letsencrypt/live/plug.org.au/privkey.pem'
+    notify: restart mumble-server
+
   #role:icecast
   - name: Install Icecast
     apt: name=icecast2 state=latest
@@ -328,5 +339,8 @@
 
     - name: restart icecast
       service: name=icecast2 state=restarted
+
+    - name: restart mumble-server
+      service: name=mumble-server state=restarted
 
 - include: mail_servers.yml
