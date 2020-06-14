@@ -33,6 +33,15 @@
     mode: '0644'
   notify: restart Postfix
 
+- name: Configure Postfix global aliases
+  template:
+    src: aliases.j2
+    dest: /etc/aliases
+    owner: root
+    group: root
+    mode: '0644'
+  notify: run postalias
+
 - name: Install a strong 2048-bit Diffie-Hellman group file
   copy:
     src: dhparams.pem

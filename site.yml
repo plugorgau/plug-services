@@ -203,6 +203,14 @@
   - name: Install useful LDAP utils
     apt: name=ldap-utils state=latest
 
+  - name: Create LDAP automatic backup script
+    template:
+      src: ldap/20-ldapdump
+      dest: /etc/cron.daily/20-ldapdump
+      owner: root
+      group: root
+      mode: 0755
+
   #role:php
   - name: PHP - Install php-fpm
     apt: name=php7.0-fpm
@@ -251,6 +259,32 @@
       regexp: '^ENABLE='
       line: 'ENABLE=true'
     notify: start icecast
+
+  #role:mailman
+  - name: Mailman - Install Mailman and fcgiwrap
+    apt: name={{ item }} state=latest
+    with_items:
+      - mailman
+      - fcgiwrap
+
+  - name: Mailman - Configure mailman URLs
+    template:
+      src: mailman/mm_cfg.py.j2
+      dest: /etc/mailman/mm_cfg.py
+    notify: reload mailman
+
+  - name: Mailman - Install nginx site config
+    template:
+      src: mailman/lists.plug.org.au.conf
+      dest: /etc/nginx/sites-available/lists.plug.org.au.conf
+    notify: reload nginx
+
+  - name: Mailman - Enable nginx site config
+    file:
+      state: link
+      src: ../sites-available/lists.plug.org.au.conf
+      dest: /etc/nginx/sites-enabled/lists.plug.org.au.conf
+    notify: reload nginx
 
   #TODO: Move this to its own file
   handlers:
