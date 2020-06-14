@@ -187,6 +187,12 @@
 #    become_user: www-data
 #    when: plug_website_new_build.changed
 
+  - name: Website - install nginx redirect map
+    template:
+      src: plug-website/redirects.map
+      dest: /etc/nginx/redirects.map
+    notify: reload nginx
+
   - name: Install nginx site config
     template: 
       src: plug-website/plug.org.au.conf
@@ -276,6 +282,12 @@
       src: mailman/mm_cfg.py.j2
       dest: /etc/mailman/mm_cfg.py
     notify: reload mailman
+
+  - name: Mailman - Install nginx redirect map
+    template:
+      src: mailman/redirects-lists.map
+      dest: /etc/nginx/redirects-lists.map
+    notify: reload nginx
 
   - name: Mailman - Install nginx site config
     template:
