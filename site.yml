@@ -223,6 +223,15 @@
       group: root
       mode: 0755
 
+  - name: Create directory to house LDAP backups
+    file:
+      path: /var/backups/slapd
+      state: directory
+      owner: root
+      group: root
+      mode: 0700
+      recurse: yes
+
   #role:php
   - name: PHP - Install php-fpm
     apt: name=php7.0-fpm
