@@ -23,6 +23,7 @@
       - mlocate
       - man-db
       - parallel
+      - bmon
 
   - name: Set timezone
     timezone:
