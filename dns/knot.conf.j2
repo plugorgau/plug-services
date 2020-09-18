@@ -24,10 +24,6 @@ key:
     secret: {{ dns_tsig_plugle_short }}
 
 remote:
-    # ns1.whiteitsolutions.com.au. (retiring IP)
-  - id: ns1-retiring
-    address: 45.77.49.133@53
-
     # ns1.whiteitsolutions.com.au.
   - id: ns1
     address: 203.29.241.26
@@ -38,7 +34,7 @@ remote:
 
 acl:
   - id: acl_secondary
-    address: [45.77.49.133, 203.29.241.26, 172.104.191.155]
+    address: [203.29.241.26, 172.104.191.155]
     action: transfer
 
   - id: acme_update_acl
@@ -52,12 +48,12 @@ template:
 zone:
   - domain: plug.linux.org.au
     file: "/etc/knot/plug.org.au.zone"
-    notify: [ns1-retiring, ns1, ns4]
+    notify: [ns1, ns4]
     acl: acl_secondary
 
   - domain: plug.org.au
     file: "/etc/knot/plug.org.au.zone"
-    notify: [ns1-retiring, ns1, ns4]
+    notify: [ns1, ns4]
     acl: acl_secondary
 
   - domain: _acme-challenge.plug.org.au
