@@ -60,3 +60,7 @@ After first boot + first run, there are a few necessary tasks.
 * Pluck an LDAP backup from backups, restore it with restoreLDAP.sh
 * Pluck /etc/letsencrypt from backups
 * Run certbot with no args, admin@plug.org.au, for bayonet, no redirects
+
+## TODO
+* certbot hook - deploy-hook = systemctl reload nginx
+
