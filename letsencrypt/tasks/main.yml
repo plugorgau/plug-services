@@ -7,3 +7,8 @@
       - certbot
       - python-certbot-nginx
     state: latest
+
+- name: certbot hook, reload nginx
+  lineinfile:
+    dest: /etc/letsencrypt/cli.ini
+    content: 'deploy-hook = systemctl reload nginx'
