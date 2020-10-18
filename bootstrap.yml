@@ -27,7 +27,7 @@
     template: src=sudo/sudoers.d/glass dest=/etc/sudoers.d/glass validate='/usr/sbin/visudo -cf %s' mode=0440
 
   - name: SSH - Add read-only key for Git access
-    copy: src='secrets/ssh/bayonet-git-read-only' dest='/home/glass/.ssh/id_rsa' mode=0600 owner=glass group=glass
+    copy: src='secrets/ssh/edison-git-read-only' dest='/home/glass/.ssh/id_rsa' mode=0600 owner=glass group=glass
 
   - name: Ansible - install key packages
     apt:
