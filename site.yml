@@ -24,6 +24,10 @@
       - man-db
       - parallel
       - bmon
+      - dstat
+      - strace
+      - pv
+      - time
 
   - name: Set timezone
     timezone:

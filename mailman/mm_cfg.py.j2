@@ -66,7 +66,7 @@ IMAGE_LOGOS         = '/images/mailman/'
 DEFAULT_EMAIL_HOST = 'plug.org.au'
 #-------------------------------------------------------------
 # Default host for web interface of newly created MLs
-DEFAULT_URL_HOST   = 'lists2.plug.org.au'
+DEFAULT_URL_HOST   = 'lists.plug.org.au'
 #-------------------------------------------------------------
 # Required when setting any of its arguments.
 add_virtualhost(DEFAULT_URL_HOST, DEFAULT_EMAIL_HOST)
@@ -95,7 +95,7 @@ DEFAULT_SEND_REMINDERS = 0
 # postfix-to-mailman.py), but be sure to see
 # /usr/share/doc/mailman/README.Debian first.
 MTA='Postfix'
-POSTFIX_STYLE_VIRTUAL_DOMAINS = ['lists2.plug.org.au']
+POSTFIX_STYLE_VIRTUAL_DOMAINS = ['lists.plug.org.au']
 
 #-------------------------------------------------------------
 # Uncomment if you want to filter mail with SpamAssassin. For
