@@ -169,7 +169,7 @@
     register: plug_website_git
 
   - name: Use Jekyll to build plug website
-    shell: "GEM_HOME=/home/glass/gems /home/glass/gems/bin/jekyll build"
+    shell: "jekyll build"
     args: 
       chdir: /home/glass/plugorgau.github.io/
     become_user: glass
