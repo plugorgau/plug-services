@@ -50,6 +50,7 @@ ionice -c3 borg create              \
     --exclude '/srv/efs/'           \
     --exclude '/srv/backup/'        \
     --exclude '/dev'                \
+    --exclude '/mnt'                \
     --exclude '/proc'               \
     --exclude '/sys'                \
     --exclude '/tmp'                \
