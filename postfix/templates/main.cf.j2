@@ -41,7 +41,7 @@ myhostname = edison.plug.org.au
 alias_maps = hash:/etc/aliases, hash:/var/lib/mailman/data/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
-mydestination = $myhostname, plug.org.au, po1.plug.org.au, edison.plug.org.au, edison.po1.plug.org.au, localhost.plug.org.au, localhost.po1.plug.org.au, localhost
+mydestination = $myhostname, edison.po1.plug.org.au, plug.org.au, po1.plug.org.au, edison.plug.org.au, edison.po1.plug.org.au, localhost.plug.org.au, localhost.po1.plug.org.au, localhost
 # This is possibly better:
 # mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 relayhost = 
@@ -88,12 +88,13 @@ smtp_tls_security_level = may
 # scan content with clamav
 content_filter = scan:127.0.0.1:10026
 
+# Disable OpenDKIM
 # OpenDKIM stuff
-milter_default_action = accept
-milter_protocol = 6
+#milter_default_action = accept
+#milter_protocol = 6
 # from inside the chroot, the socket will be in /var/run/opendkim 
-smtpd_milters = unix:/var/run/opendkim/opendkim.sock
-non_smtpd_milters = unix:/var/run/opendkim/opendkim.sock
+#smtpd_milters = unix:/var/run/opendkim/opendkim.sock
+#non_smtpd_milters = unix:/var/run/opendkim/opendkim.sock
 
 #####################################
 # Things we might be able to remove #
