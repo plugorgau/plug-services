@@ -356,4 +356,4 @@
     - name: restart mumble-server
       service: name=mumble-server state=restarted
 
-- include: mail_servers.yml
+- import_playbook: mail_servers.yml
