@@ -51,11 +51,11 @@
       mode: 0700
       recurse: yes
 
-  - name: Apt - enable stretch-backports
+  - name: Apt - enable bookworm-backports
     apt_repository:
-      repo: "deb http://mirrors.digitalocean.com/debian stretch-backports main contrib non-free"
+      repo: "deb http://mirrors.digitalocean.com/debian bookworm-backports main contrib non-free"
       state: present
-      filename: stretch-backports
+      filename: bookworm-backports
       update_cache: yes
 
   #role:dns-servers
@@ -92,13 +92,12 @@
     apt: name=certbot state=latest
 
   - name: Install certbot nginx plugin
-    apt: name=python-certbot-nginx state=latest
+    apt: name=python3-certbot-nginx state=latest
 
   - name: Install certbot DNS RFC2136 plugin
     apt:
       name: python3-certbot-dns-rfc2136
       state: present
-      default_release: stretch-backports
 
   - name: Create certbot secrets and config folder
     file:
@@ -164,17 +163,16 @@
       mode: 0600
 
   #role:plug-website
-  # jekyll install disabled temporarily until we move to buster
-  #  - name: Install jekyll
-  #    apt: name=jekyll state=latest
+  - name: Install Hugo
+    apt: name=hugo state=latest
 
   - name: Use Git to checkout latest plug website
     git: version="master" repo="https://github.com/plugorgau/plugorgau.github.io.git" dest="/home/glass/plugorgau.github.io/"
     become_user: glass
     register: plug_website_git
 
-  - name: Use Jekyll to build plug website
-    shell: "jekyll build"
+  - name: Use Hugo to build plug website
+    shell: "hugo -d ./_site"
     args: 
       chdir: /home/glass/plugorgau.github.io/
     become_user: glass
@@ -239,7 +237,7 @@
 
   #role:php
   - name: PHP - Install php-fpm
-    apt: name=php7.0-fpm
+    apt: name=php-fpm
     # TODO Configure php-fpm
 
   #role:ugmm
@@ -247,7 +245,7 @@
     apt: name=smarty3 state=latest
 
   - name: UGMM - Install LDAP PHP module
-    apt: name=php7.0-ldap state=latest
+    apt: name=php-ldap state=latest
     # TODO nginx cofig
     # TODO php pool?
 
