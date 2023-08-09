@@ -29,6 +29,7 @@
       - pv
       - time
       - devscripts
+      - rsync
 
   - name: Set timezone
     timezone:
