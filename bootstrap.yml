@@ -33,7 +33,7 @@
     apt:
       name:
         - ansible
-        - python-apt
+        - python3-apt
         - git
       state: latest
 
