@@ -297,6 +297,11 @@
     notify: start icecast
 
   #role:mailman
+  - name: Mailman - Enable Debian Buster repo for Python 2 packages
+    apt_repository:
+      repo: deb http://ftp.au.debian.org/debian buster main
+      filename: buster
+
   - name: Mailman - Install Mailman and fcgiwrap
     apt: name={{ item }} state=latest
     with_items:
