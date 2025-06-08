@@ -19,6 +19,9 @@ export BORG_PASSPHRASE='{{ borg_passphrase }}'
 # Setting this to enable SSH key access
 export BORG_RSH='ssh -i /root/.ssh/borgkey'
 
+# Rsync.net requires us to select a versioned copy of borg
+export BORG_REMOTE_PATH=borg14
+
 # Init once only
 #borg init --encryption=repokey ; exit
 
@@ -26,7 +29,7 @@ export BORG_RSH='ssh -i /root/.ssh/borgkey'
 info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
 trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
 
-info "Starting backup"
+info "$0: Starting backup to $BORG_REPO"
 
 # Backup the most important directories into an archive named after
 # the machine this script is currently running on:
