@@ -59,7 +59,7 @@ ionice -c3 borg create              \
     --exclude '/sys'                \
     --exclude '/tmp'                \
                                     \
-    ::'{hostname}-{now}'            \
+    ::'{hostname}-{now:%Y-%m-%dT%H:%M:%S}' \
     /                               \
 
 backup_exit=$?
