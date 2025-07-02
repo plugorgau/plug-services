@@ -67,13 +67,40 @@
     template:
       src: dns/knot.conf.j2
       dest: /etc/knot/knot.conf
-      owner: knot
+      owner: root
       group: knot
       mode: '0640'
     notify: reload knot
 
-  - name: DNS - Add example plug.org.au zonefile
-    template: src=dns/plug.org.au.example.zone.j2 dest=/etc/knot/plug.org.au.example.zone owner=knot group=knot mode=0644
+  - name: DNS - Add plug.org.au zonefile
+    template:
+      src: dns/plug.org.au.zone.j2
+      dest: /etc/knot/plug.org.au.zone
+      owner: root
+      group: root
+      mode: '0644'
+    notify: reload knot
+
+  - name: DNS - ensure /var/lib/knot/acme exists
+    file:
+      path: /var/lib/knot/acme
+      state: directory
+      owner: knot
+      group: knot
+      mode: '0770'
+
+  - name: DNS - Create _acme-challenge zone files if they don't exist
+    template:
+      src: dns/{{ item }}.zone.j2
+      dest: /var/lib/knot/acme/{{ item }}.zone
+      owner: knot
+      group: knot
+      mode: '0660'
+      force: false
+    loop:
+      - _acme-challenge.plug.org.au
+      - _acme-challenge.po1.plug.org.au
+    notify: reload knot
 
   #role:nginx
   # Currently disabled as handled in/by mail_servers

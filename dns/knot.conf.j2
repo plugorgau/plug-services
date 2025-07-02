@@ -1,4 +1,4 @@
-#
+# {{ ansible_managed }}
 # This is a sample of a minimal configuration file for Knot DNS.
 # For more details, see man 5 knot.conf or refer to the server documentation.
 #
@@ -57,9 +57,9 @@ zone:
     acl: acl_secondary
 
   - domain: _acme-challenge.plug.org.au
-    file: "/etc/knot/_acme-challenge.plug.org.au.zone"
+    file: "/var/lib/knot/acme/_acme-challenge.plug.org.au.zone"
     acl: acme_update_acl
 
   - domain: _acme-challenge.po1.plug.org.au
-    file: "/etc/knot/_acme-challenge.po1.plug.org.au.zone"
+    file: "/var/lib/knot/acme/_acme-challenge.po1.plug.org.au.zone"
     acl: acme_update_acl
