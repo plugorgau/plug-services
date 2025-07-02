@@ -173,8 +173,9 @@
     register: plug_website_git
 
   - name: Use Hugo to build plug website
-    shell: "hugo -d ./_site"
-    args: 
+    # XXX: temporarily use a non-packaged copy of hugo to build the site
+    shell: "/home/glass/.local/bin/hugo -d ./_site"
+    args:
       chdir: /home/glass/plugorgau.github.io/
     become_user: glass
     when: plug_website_git.changed
