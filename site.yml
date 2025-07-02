@@ -54,7 +54,7 @@
 
   - name: Apt - enable bookworm-backports
     apt_repository:
-      repo: "deb http://mirrors.digitalocean.com/debian bookworm-backports main contrib non-free"
+      repo: "deb http://deb.debian.org/debian bookworm-backports main contrib non-free"
       state: present
       filename: bookworm-backports
       update_cache: yes
