@@ -60,6 +60,23 @@
       update_cache: yes
 
   #role:dns-servers
+  - name: DNS - ensure /etc/systemd/resolved.conf.d exists
+    file:
+      path: /etc/systemd/resolved.conf.d
+      state: directory
+      owner: root
+      group: root
+      mode: '0755'
+
+  - name: DNS - turn off systemd-resolved's TCP stub listener
+    copy:
+      src: dns/no-tcp-listener.conf
+      dest: /etc/systemd/resolved.conf.d/no-tcp-listener.conf
+      owner: root
+      group: root
+      mode: '0644'
+    notify: restart systemd-resolved
+
   - name: DNS - Install Knot DNS
     apt: name=knot state=present
 
@@ -369,6 +386,9 @@
 #      notify: install certbot nginx plugin
 #    - name: install certbot nginx plugin
 #      apt: name=python-certbot-nginx state=latest
+
+    - name: restart systemd-resolved
+      service: name=systemd-resolved state=restarted
 
     - name: reload knot
       service: name=knot state=reloaded
