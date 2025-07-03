@@ -19,11 +19,12 @@
 - name: Enable SpamAssassin nightly cron
   lineinfile:
     dest: /etc/default/spamassassin
+    create: true
     regexp: '^CRON='
     line: CRON=1
 
 - name: Enable and start SpamAssassin service
   systemd:
-    name: spamassassin
+    name: spamd
     enabled: yes
     state: started
