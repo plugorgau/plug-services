@@ -7,29 +7,30 @@
   tasks:
   #role:base
   - name: Install essential utils
-    apt: name={{ item }} state=latest
-    with_items:
-      - nano
-      - joe
-      - git
-      - vim
-      - emacs
-      - screen
-      - tmux
-      - molly-guard
-      - links
-      - eatmydata
-      - etckeeper
-      - mlocate
-      - man-db
-      - parallel
-      - bmon
-      - dstat
-      - strace
-      - pv
-      - time
-      - devscripts
-      - rsync
+    apt:
+      name:
+        - nano
+        - joe
+        - git
+        - vim
+        - emacs
+        - screen
+        - tmux
+        - molly-guard
+        - links
+        - eatmydata
+        - etckeeper
+        - mlocate
+        - man-db
+        - parallel
+        - bmon
+        - dstat
+        - strace
+        - pv
+        - time
+        - devscripts
+        - rsync
+      state: latest
 
   - name: Set timezone
     timezone:
@@ -162,10 +163,11 @@
 
   #role:borgbackup
   - name: Install Borg backup utility and dependencies
-    apt: name={{ item }} state=latest
-    with_items:
-      - borgbackup
-      - fuse
+    apt:
+      name:
+        - borgbackup
+        - fuse
+      state: latest
 
   - name: Create Borg backup script
     template:
@@ -297,10 +299,11 @@
 
   #role:fail2ban
   - name: Install fail2ban and dependencies
-    apt: name={{ item }} state=latest
-    with_items:
-      - fail2ban
-      - python3-pyinotify
+    apt:
+      name:
+        - fail2ban
+        - python3-pyinotify
+      state: latest
 
   - name: Configure fail2ban
     template: src=fail2ban/jail.local.j2 dest=/etc/fail2ban/jail.local
@@ -348,10 +351,11 @@
       filename: buster
 
   - name: Mailman - Install Mailman and fcgiwrap
-    apt: name={{ item }} state=latest
-    with_items:
-      - mailman
-      - fcgiwrap
+    apt:
+      name:
+        - mailman
+        - fcgiwrap
+      state: latest
 
   - name: Mailman - Configure mailman URLs
     template:
