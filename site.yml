@@ -54,11 +54,16 @@
       recurse: yes
 
   - name: Apt - enable bookworm-backports
-    apt_repository:
-      repo: "deb http://deb.debian.org/debian bookworm-backports main contrib non-free"
-      state: present
-      filename: bookworm-backports
-      update_cache: yes
+    deb822_repository:
+      name: bookworm-backports
+      types: deb
+      uris: http://deb.debian.org/debian
+      suites: bookworm-backports
+      components:
+        - main
+        - contrib
+        - non-free
+      signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
 
   #role:dns-servers
   - name: DNS - ensure /etc/systemd/resolved.conf.d exists
@@ -346,12 +351,18 @@
 
   #role:mailman
   - name: Mailman - Enable Debian Buster repo for Python 2 packages
-    apt_repository:
-      repo: deb http://ftp.au.debian.org/debian buster main
-      filename: buster
+    deb822_repository:
+      name: buster
+      types: deb
+      uris: http://ftp.au.debian.org/debian
+      suites: buster
+      components:
+        - main
+      signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
 
   - name: Mailman - Install Mailman and fcgiwrap
     apt:
+      update_cache: yes
       name:
         - mailman
         - fcgiwrap
