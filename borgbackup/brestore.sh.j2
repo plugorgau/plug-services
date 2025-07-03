@@ -16,13 +16,11 @@ fi
 
 mkdir -p /mnt/restore
 
-getvar_b() {
-	perl -lne '/^borg_passphrase: .([\w\s]+)/ && print $1' ~glass/plug-services-secrets/group_vars/all
-}
-
 export BORG_REPO=ssh://19678@ch-s012.rsync.net:22/data2/home/19678/ruby/
+
+export BORG_REMOTE_PATH=borg14
 export BORG_RSH="ssh -i /root/.ssh/borgkey"
-export BORG_PASSPHRASE="$(getvar_b)"
+export BORG_PASSPHRASE='{{ borg_passphrase }}'
 
 set -x
 if mountpoint -q /mnt/restore; then
@@ -34,7 +32,7 @@ if ! borg mount $BORG_REPO /mnt/restore; then
   exit 1
 fi
 
-for HOST in bayonet edison power; do
+for HOST in bayonet edison power iec; do
   rm -f "/tmp/latest-$HOST"
   ln -s "$(find /mnt/restore -maxdepth 1 -name "${HOST}*"|sort -rn|head -1)" "/tmp/latest-$HOST"
 done
