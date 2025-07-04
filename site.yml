@@ -104,7 +104,7 @@
 
   - name: Configure certbot rfc2136 plugin
     template:
-      src: letsencrypt/rfc2136.ini.j2
+      src: roles/letsencrypt/rfc2136.ini.j2
       dest: /root/.secrets/certbot/rfc2136.ini
       owner: root
       group: root
