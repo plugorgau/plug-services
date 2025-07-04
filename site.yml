@@ -167,52 +167,8 @@
       mode: '0600'
 
   #role:borgbackup
-  - name: Install Borg backup utility and dependencies
-    apt:
-      name:
-        - borgbackup
-        - fuse
-      state: latest
-
-  - name: Create Borg backup script
-    template:
-      src: borgbackup/borgauto.sh.j2
-      dest: /root/bin/borgauto.sh
-      owner: root
-      group: root
-      mode: 0700
-
-  - name: Create Borg restore script
-    template:
-      src: borgbackup/brestore.sh.j2
-      dest: /root/bin/brestore.sh
-      owner: root
-      group: root
-      mode: 0700
-
-  - name: Ensure Borg log file directory exists
-    file:
-      path: /var/log/borgbackup/
-      state: directory
-      owner: root
-      group: adm
-      mode: 0755
-
-  - name: SSH - Install borg private key per machine
-    template:
-      src: secrets/ssh/borgkey-{{ ansible_hostname }}
-      dest: /root/.ssh/borgkey
-      owner: root
-      group: root
-      mode: 0600
-
-  - name: SSH - Install borg public key per machine
-    template:
-      src: secrets/ssh/borgkey-{{ ansible_hostname }}.pub
-      dest: /root/.ssh/borgkey.pub
-      owner: root
-      group: root
-      mode: 0600
+  - name: Set up Borg
+    import_role: name=borgbackup
 
   #role:plug-website
   - name: Install Hugo

@@ -1,0 +1,41 @@
+- name: Install Borg backup utility and dependencies
+  apt:
+    name:
+      - borgbackup
+      - fuse
+    state: latest
+
+- name: Ensure Borg log file directory exists
+  file:
+    path: /var/log/borgbackup/
+    state: directory
+    owner: root
+    group: adm
+    mode: 0755
+
+- name: Create Borg backup scripts
+  template:
+    src: "{{ item }}.j2"
+    dest: "/root/bin/{{ item }}"
+    owner: root
+    group: root
+    mode: 0700
+  loop:
+    - borgauto.sh
+    - brestore.sh
+
+- name: SSH - Install borg private key per machine
+  template:
+    src: secrets/ssh/borgkey-{{ ansible_hostname }}
+    dest: /root/.ssh/borgkey
+    owner: root
+    group: root
+    mode: 0600
+
+- name: SSH - Install borg public key per machine
+  template:
+    src: secrets/ssh/borgkey-{{ ansible_hostname }}.pub
+    dest: /root/.ssh/borgkey.pub
+    owner: root
+    group: root
+    mode: 0600
