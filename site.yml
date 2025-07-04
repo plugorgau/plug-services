@@ -66,64 +66,8 @@
       signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
 
   #role:dns-servers
-  - name: DNS - ensure /etc/systemd/resolved.conf.d exists
-    file:
-      path: /etc/systemd/resolved.conf.d
-      state: directory
-      owner: root
-      group: root
-      mode: '0755'
-
-  - name: DNS - turn off systemd-resolved's TCP stub listener
-    copy:
-      src: dns/no-tcp-listener.conf
-      dest: /etc/systemd/resolved.conf.d/no-tcp-listener.conf
-      owner: root
-      group: root
-      mode: '0644'
-    notify: restart systemd-resolved
-
-  - name: DNS - Install Knot DNS
-    apt: name=knot state=present
-
-  - name: DNS - Configure Knot DNS
-    template:
-      src: dns/knot.conf.j2
-      dest: /etc/knot/knot.conf
-      owner: root
-      group: knot
-      mode: '0640'
-    notify: reload knot
-
-  - name: DNS - Add plug.org.au zonefile
-    template:
-      src: dns/plug.org.au.zone.j2
-      dest: /etc/knot/plug.org.au.zone
-      owner: root
-      group: root
-      mode: '0644'
-    notify: reload knot
-
-  - name: DNS - ensure /var/lib/knot/acme exists
-    file:
-      path: /var/lib/knot/acme
-      state: directory
-      owner: knot
-      group: knot
-      mode: '0770'
-
-  - name: DNS - Create _acme-challenge zone files if they don't exist
-    template:
-      src: dns/{{ item }}.zone.j2
-      dest: /var/lib/knot/acme/{{ item }}.zone
-      owner: knot
-      group: knot
-      mode: '0660'
-      force: false
-    loop:
-      - _acme-challenge.plug.org.au
-      - _acme-challenge.po1.plug.org.au
-    notify: reload knot
+  - name: Set up DNS
+    import_role: name=dns-server
 
   #role:nginx
   # Currently disabled as handled in/by mail_servers
@@ -357,12 +301,6 @@
 #      notify: install certbot nginx plugin
 #    - name: install certbot nginx plugin
 #      apt: name=python-certbot-nginx state=latest
-
-    - name: restart systemd-resolved
-      service: name=systemd-resolved state=restarted
-
-    - name: reload knot
-      service: name=knot state=reloaded
 
     - name: reload mailman
       service: name=mailman state=reloaded

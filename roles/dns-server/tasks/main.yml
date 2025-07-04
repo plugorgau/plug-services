@@ -1,0 +1,58 @@
+- name: ensure /etc/systemd/resolved.conf.d exists
+  file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: turn off systemd-resolved's TCP stub listener
+  copy:
+    src: no-tcp-listener.conf
+    dest: /etc/systemd/resolved.conf.d/no-tcp-listener.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart systemd-resolved
+
+- name: Install Knot DNS
+  apt: name=knot state=present
+
+- name: Configure Knot DNS
+  template:
+    src: knot.conf.j2
+    dest: /etc/knot/knot.conf
+    owner: root
+    group: knot
+    mode: '0640'
+  notify: reload knot
+
+- name: Add plug.org.au zonefile
+  copy:
+    src: zones/plug.org.au.zone
+    dest: /etc/knot/plug.org.au.zone
+    owner: root
+    group: root
+    mode: '0644'
+  notify: reload knot
+
+- name: ensure /var/lib/knot/acme exists
+  file:
+    path: /var/lib/knot/acme
+    state: directory
+    owner: knot
+    group: knot
+    mode: '0770'
+
+- name: Create _acme-challenge zone files if they don't exist
+  copy:
+    src: zones/{{ item }}.zone
+    dest: /var/lib/knot/acme/{{ item }}.zone
+    owner: knot
+    group: knot
+    mode: '0660'
+    force: false
+  loop:
+    - _acme-challenge.plug.org.au
+    - _acme-challenge.po1.plug.org.au
+  notify: reload knot
