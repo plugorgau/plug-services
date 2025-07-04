@@ -250,48 +250,8 @@
     notify: start icecast
 
   #role:mailman
-  - name: Mailman - Enable Debian Buster repo for Python 2 packages
-    deb822_repository:
-      name: buster
-      types: deb
-      uris: http://ftp.au.debian.org/debian
-      suites: buster
-      components:
-        - main
-      signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
-
-  - name: Mailman - Install Mailman and fcgiwrap
-    apt:
-      update_cache: yes
-      name:
-        - mailman
-        - fcgiwrap
-      state: latest
-
-  - name: Mailman - Configure mailman URLs
-    template:
-      src: mailman/mm_cfg.py.j2
-      dest: /etc/mailman/mm_cfg.py
-    notify: reload mailman
-
-  - name: Mailman - Install nginx redirect map
-    template:
-      src: mailman/redirects-lists.map
-      dest: /etc/nginx/redirects-lists.map
-    notify: reload nginx
-
-  - name: Mailman - Install nginx site config
-    template:
-      src: mailman/lists.plug.org.au.conf
-      dest: /etc/nginx/sites-available/lists.plug.org.au.conf
-    notify: reload nginx
-
-  - name: Mailman - Enable nginx site config
-    file:
-      state: link
-      src: ../sites-available/lists.plug.org.au.conf
-      dest: /etc/nginx/sites-enabled/lists.plug.org.au.conf
-    notify: reload nginx
+  - name:
+    import_role: name=mailman2
 
   #TODO: Move this to its own file
   handlers:
@@ -301,9 +261,6 @@
 #      notify: install certbot nginx plugin
 #    - name: install certbot nginx plugin
 #      apt: name=python-certbot-nginx state=latest
-
-    - name: reload mailman
-      service: name=mailman state=reloaded
 
     - name: reload fail2ban
       service: name=fail2ban state=reloaded

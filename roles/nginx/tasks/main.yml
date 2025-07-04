@@ -2,7 +2,7 @@
 # Name: Install and configure nginx
 
 - name: Install nginx
-  apt: 
+  apt:
     name:
       - nginx
     state: latest
@@ -14,6 +14,7 @@
     owner: root
     group: root
     mode: '0644'
+  notify: reload nginx
 
 - name: Configure our default webpage
   template: src=default.html.j2 dest=/var/www/html/index.html

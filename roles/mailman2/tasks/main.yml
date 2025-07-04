@@ -1,0 +1,42 @@
+- name: Enable Debian Buster repo for Python 2 packages
+  deb822_repository:
+    name: buster
+    types: deb
+    uris: http://ftp.au.debian.org/debian
+    suites: buster
+    components:
+      - main
+    signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+
+- name: Install Mailman and fcgiwrap
+  apt:
+    update_cache: yes
+    name:
+      - mailman
+      - fcgiwrap
+    state: latest
+
+- name: Configure mailman URLs
+  template:
+    src: mm_cfg.py.j2
+    dest: /etc/mailman/mm_cfg.py
+  notify: reload mailman2
+
+- name: Install nginx redirect map
+  template:
+    src: redirects-lists.map
+    dest: /etc/nginx/redirects-lists.map
+  notify: reload nginx
+
+- name: Install nginx site config
+  template:
+    src: lists.plug.org.au.conf
+    dest: /etc/nginx/sites-available/lists.plug.org.au.conf
+  notify: reload nginx
+
+- name: Enable nginx site config
+  file:
+    state: link
+    src: ../sites-available/lists.plug.org.au.conf
+    dest: /etc/nginx/sites-enabled/lists.plug.org.au.conf
+  notify: reload nginx
