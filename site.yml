@@ -51,8 +51,7 @@
     # TODO php pool?
 
   #role:fail2ban
-  - name: Set up fail2ban
-    import_role: name=fail2ban
+  - import_role: name=fail2ban
 
   #role:mumble-servers
   - name: Install Mumble
@@ -70,37 +69,13 @@
     notify: restart mumble-server
 
   #role:icecast
-  - name: Install Icecast
-    apt: name=icecast2 state=latest
-
-  - name: Configure Icecast
-    template:
-      src: icecast/icecast.xml.j2
-      dest: /etc/icecast2/icecast.xml
-      owner: icecast2
-      group: icecast
-      mode: 0660
-    notify: restart icecast
-
-  - name: Enable Icecast
-    lineinfile:
-      name: /etc/default/icecast2
-      regexp: '^ENABLE='
-      line: 'ENABLE=true'
-    notify: start icecast
+  - import_role: name=icecast
 
   #role:mailman
-  - name:
-    import_role: name=mailman2
+  - import_role: name=mailman2
 
   #TODO: Move this to its own file
   handlers:
-    - name: start icecast
-      service: name=icecast2 state=started
-
-    - name: restart icecast
-      service: name=icecast2 state=restarted
-
     - name: restart mumble-server
       service: name=mumble-server state=restarted
 

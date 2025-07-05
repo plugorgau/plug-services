@@ -1,0 +1,18 @@
+- name: Install Icecast
+  apt: name=icecast2 state=latest
+
+- name: Configure Icecast
+  template:
+    src: icecast.xml.j2
+    dest: /etc/icecast2/icecast.xml
+    owner: icecast2
+    group: icecast
+    mode: 0660
+  notify: restart icecast
+
+- name: Enable Icecast
+  lineinfile:
+    name: /etc/default/icecast2
+    regexp: '^ENABLE='
+    line: 'ENABLE=true'
+  notify: start icecast
