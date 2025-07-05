@@ -2,7 +2,7 @@ $TTL 43200	; 12 hours
 $TTL 3600 ; 1 hour
 $TTL 60 ; 1 minute
 @		IN SOA	ns1.plug.org.au. hostmaster.plug.org.au. (
-				2025070400 ; serial
+				2025070500 ; serial
 				4800       ; refresh (1 hour 20 minutes)
 				900        ; retry (15 minutes)
 				2419200    ; expire (4 weeks)
@@ -39,12 +39,14 @@ edison			A       159.65.142.85
 edison.po1		A       159.65.142.85
                         TXT     "DO droplet-10 2GiB in Singapore"
 			TXT	"v=spf1 a mx ~all"
-mail.po1		CNAME	edison.plug.org.au.
-po1			A       159.65.142.85
-po1			TXT	"v=spf1 a mx ~all"
+
+iec.po1                 CNAME   iec.plug.org.au.
+mail.po1		CNAME	iec.plug.org.au.
+po1			A       103.249.238.24
+			MX	5 iec.plug.org.au.
+			TXT	"v=spf1 a mx ~all"
 _dmarc.po1		TXT	"v=DMARC1; p=none; rua=mailto:z50uofjn@ag.ap.dmarcian.com;"
 mail._domainkey.po1	TXT	( "v=DKIM1; h=sha256; k=rsa; " "p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqbjwoKyMhu0e+SU9GAlIk6HrtCAxXEDOxNeTsTCGK8T4H24EQvQ1gowp4huauvhlAAhCm/EuzAHWpbEkugxGj9sRDisbjh6Zkz6nXzmftF3GWjpKq2uDgYju4xRycyVzDOIQEyKjgoCLtNy444bIzGnrI9UDgYlzgWMbjPYxOEO//9wEkQJg+ReNB9pEq5d5QiC5K2XbZF9nBQ" "0Y3JwNJ8tT1TuaFQTzJsYupQSehZqEuV6jaUa0ZyosfpD4QwBQwuC0d8f321NInsIU82Jb3Pl7Ccyg3ZOaKCk0u0L+BPodPn9KRUumKE2NaUGaqOL15YXTKGh0izsnh5p4p7LWBwIDAQAB" )  ; ----- DKIM key mail for po1.plug.org.au
-po1			MX	5 edison.plug.org.au.
 mail 			CNAME	iec
 services 		CNAME	iec
 ugmm			CNAME   iec
