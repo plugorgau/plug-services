@@ -54,29 +54,12 @@
   - import_role: name=fail2ban
 
   #role:mumble-servers
-  - name: Install Mumble
-    apt: name=mumble-server state=latest
-
-  - name: Set mumble SSL
-    # https://stackoverflow.com/questions/24334115/ansible-lineinfile-for-several-lines
-    lineinfile:
-      name: /etc/mumble-server.ini
-      regexp: "^#? *{{ item.key | regex_escape() }}="
-      line: "{{ item.key }}={{ item.value }}"
-    with_dict:
-      'sslCert': '/etc/letsencrypt/live/plug.org.au/fullchain.pem'
-      'sslKey': '/etc/letsencrypt/live/plug.org.au/privkey.pem'
-    notify: restart mumble-server
+  - import_role: name=mumble-server
 
   #role:icecast
   - import_role: name=icecast
 
   #role:mailman
   - import_role: name=mailman2
-
-  #TODO: Move this to its own file
-  handlers:
-    - name: restart mumble-server
-      service: name=mumble-server state=restarted
 
 - import_playbook: mail_servers.yml
