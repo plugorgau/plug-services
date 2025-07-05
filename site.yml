@@ -7,53 +7,10 @@
   roles:
     - base
     - dns-server
+    - letsencrypt
+    - borgbackup
 
   tasks:
-  #role:nginx
-  # Currently disabled as handled in/by mail_servers
-  #- name: Install nginx
-  #  apt: name=nginx state=latest
-  #
-  #- name: Configure nginx
-  #  template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
-  #  notify:
-  #  - reload nginx
-  #
-  #- name: Configure default webpage
-  #  template: src=nginx/default.html dest=/var/www/html/index.html
-
-  #role:letsencrypt
-  - name: Install certbot
-    apt: name=certbot state=latest
-
-  - name: Install certbot nginx plugin
-    apt: name=python3-certbot-nginx state=latest
-
-  - name: Install certbot DNS RFC2136 plugin
-    apt:
-      name: python3-certbot-dns-rfc2136
-      state: present
-
-  - name: Create certbot secrets and config folder
-    file:
-      path: /root/.secrets/certbot/
-      state: directory
-      owner: root
-      group: root
-      mode: '0600'
-
-  - name: Configure certbot rfc2136 plugin
-    template:
-      src: roles/letsencrypt/rfc2136.ini.j2
-      dest: /root/.secrets/certbot/rfc2136.ini
-      owner: root
-      group: root
-      mode: '0600'
-
-  #role:borgbackup
-  - name: Set up Borg
-    import_role: name=borgbackup
-
   #role:plug-website
   - name: Install Hugo
     apt: name=hugo state=latest

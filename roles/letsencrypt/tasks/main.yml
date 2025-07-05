@@ -1,14 +1,29 @@
 ---
 # Name: Install and configure Let's Encrypt Certbot for nginx
 
-- name: Install Certbot + nginx plugin
-  apt: 
+- name: Install Certbot + plugins
+  apt:
     name:
       - certbot
-      - python-certbot-nginx
+      - python3-certbot-dns-rfc2136
+      - python3-certbot-nginx
     state: latest
 
-- name: certbot hook, reload nginx
+- name: Configure certbot agree-tos, email, and deploy-hook
   lineinfile:
     dest: /etc/letsencrypt/cli.ini
-    line: 'deploy-hook = systemctl reload nginx'
+    line: '{{ item }}'
+  loop:
+    - 'agree-tos = true'
+    - 'email = admin@plug.org.au'
+    - 'deploy-hook = systemctl reload nginx'
+
+- name: Configure certbot dns-rfc2136 plugin
+  template:
+    src: dns-rfc2136.ini.j2
+    dest: /etc/letsencrypt/dns-rfc2136.ini
+    owner: root
+    group: root
+    mode: '0600'
+
+# TODO: register and acquire certificates for plug.org.au and mail.plug.org.au
