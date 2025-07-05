@@ -4,71 +4,11 @@
   remote_user: '{{ glass_user }}'
   become: yes
 
+  roles:
+    - base
+    - dns-server
+
   tasks:
-  #role:base
-  - name: Install essential utils
-    apt:
-      name:
-        - nano
-        - joe
-        - git
-        - vim
-        - emacs
-        - screen
-        - tmux
-        - molly-guard
-        - links
-        - eatmydata
-        - etckeeper
-        - mlocate
-        - man-db
-        - parallel
-        - bmon
-        - dstat
-        - strace
-        - pv
-        - time
-        - devscripts
-        - rsync
-      state: latest
-
-  - name: Set timezone
-    timezone:
-      name: Australia/Perth
-
-  - name: Set nano as default editor
-    alternatives:
-      name: editor
-      path: /bin/nano
-
-  - name: Install build-essential
-    apt: name=build-essential state=latest
-
-  - name: Create bin directory in /root/ for storing util scripts
-    file:
-      path: /root/bin
-      state: directory
-      owner: root
-      group: root
-      mode: 0700
-      recurse: yes
-
-  - name: Apt - enable bookworm-backports
-    deb822_repository:
-      name: bookworm-backports
-      types: deb
-      uris: http://deb.debian.org/debian
-      suites: bookworm-backports
-      components:
-        - main
-        - contrib
-        - non-free
-      signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
-
-  #role:dns-servers
-  - name: Set up DNS
-    import_role: name=dns-server
-
   #role:nginx
   # Currently disabled as handled in/by mail_servers
   #- name: Install nginx
