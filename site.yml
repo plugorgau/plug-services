@@ -9,58 +9,9 @@
     - dns-server
     - letsencrypt
     - borgbackup
+    - plug-website
 
   tasks:
-  #role:plug-website
-  - name: Install Hugo
-    apt: name=hugo state=latest
-
-  - name: Use Git to checkout latest plug website
-    git: version="master" repo="https://github.com/plugorgau/plugorgau.github.io.git" dest="/home/glass/plugorgau.github.io/"
-    become_user: glass
-    register: plug_website_git
-
-  - name: Use Hugo to build plug website
-    # XXX: temporarily use a non-packaged copy of hugo to build the site
-    shell: "/home/glass/.local/bin/hugo -d ./_site"
-    args:
-      chdir: /home/glass/plugorgau.github.io/
-    become_user: glass
-    when: plug_website_git.changed
-    register: plug_website_new_build
-
-  - name: Use rsync + a script to destructively update running site
-    shell: bash /home/glass/plugorgau.github.io/deploy.sh
-    when: plug_website_new_build.changed
-
-#  - name: Use rsync destructively to update running site
-#    synchronize:
-#      src: /home/glass/plugorgau.github.io/_site/
-#      dest: /var/www/bayonet.plug.org.au/
-#      delete: yes
-#      recursive: yes
-#    become_user: www-data
-#    when: plug_website_new_build.changed
-
-  - name: Website - install nginx redirect map
-    template:
-      src: plug-website/redirects.map
-      dest: /etc/nginx/redirects.map
-    notify: reload nginx
-
-  - name: Install nginx site config
-    template: 
-      src: plug-website/plug.org.au.conf
-      dest: /etc/nginx/sites-available/plug.org.au.conf
-    notify: reload nginx
-
-  - name: Enable nginx site config
-    file:
-      state: link 
-      src: ../sites-available/plug.org.au.conf
-      dest: /etc/nginx/sites-enabled/plug.org.au.conf
-    notify: reload nginx
-
   #role:ldap
   - name: Install LDAP server
     apt: name=slapd state=latest
@@ -152,13 +103,6 @@
 
   #TODO: Move this to its own file
   handlers:
-    - name: reload nginx
-      service: name=nginx state=reloaded
-
-#      notify: install certbot nginx plugin
-#    - name: install certbot nginx plugin
-#      apt: name=python-certbot-nginx state=latest
-
     - name: reload fail2ban
       service: name=fail2ban state=reloaded
 
