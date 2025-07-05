@@ -37,11 +37,11 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 # information on enabling SSL in the smtp client.
 
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-myhostname = edison.plug.org.au
+myhostname = iec.plug.org.au
 alias_maps = hash:/etc/aliases, hash:/var/lib/mailman/data/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
-mydestination = $myhostname, edison.po1.plug.org.au, plug.org.au, po1.plug.org.au, edison.plug.org.au, edison.po1.plug.org.au, localhost.plug.org.au, localhost.po1.plug.org.au, localhost
+mydestination = $myhostname, plug.org.au, po1.plug.org.au, iec.plug.org.au, iec.po1.plug.org.au, localhost.plug.org.au, localhost.po1.plug.org.au, localhost
 # This is possibly better:
 # mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 relayhost = 
