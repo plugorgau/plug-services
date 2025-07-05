@@ -10,32 +10,14 @@
     - letsencrypt
     - borgbackup
     - plug-website
+    - ldap-server
+    # - ugmm
+    - fail2ban
+    - mumble-server
+    - icecast
+    - mailman2
 
   tasks:
-  #role:ldap
-  - name: Install LDAP server
-    apt: name=slapd state=latest
-
-  - name: Install useful LDAP utils
-    apt: name=ldap-utils state=latest
-
-  - name: Create LDAP automatic backup script
-    template:
-      src: ldap/20-ldapdump
-      dest: /etc/cron.daily/20-ldapdump
-      owner: root
-      group: root
-      mode: 0755
-
-  - name: Create directory to house LDAP backups
-    file:
-      path: /var/backups/slapd
-      state: directory
-      owner: root
-      group: root
-      mode: 0700
-      recurse: yes
-
   #role:php
   - name: PHP - Install php-fpm
     apt: name=php-fpm
@@ -49,17 +31,5 @@
     apt: name=php-ldap state=latest
     # TODO nginx cofig
     # TODO php pool?
-
-  #role:fail2ban
-  - import_role: name=fail2ban
-
-  #role:mumble-servers
-  - import_role: name=mumble-server
-
-  #role:icecast
-  - import_role: name=icecast
-
-  #role:mailman
-  - import_role: name=mailman2
 
 - import_playbook: mail_servers.yml

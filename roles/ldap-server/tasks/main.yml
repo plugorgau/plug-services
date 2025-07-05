@@ -1,0 +1,23 @@
+- name: Install LDAP server and utils
+  apt:
+    name:
+      - slapd
+      - ldap-utils
+    state: latest
+
+- name: Create LDAP automatic backup script
+  copy:
+    src: 20-ldapdump
+    dest: /etc/cron.daily/20-ldapdump
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create directory to house LDAP backups
+  file:
+    path: /var/backups/slapd
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+    recurse: yes
