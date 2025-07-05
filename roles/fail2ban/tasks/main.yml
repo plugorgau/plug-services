@@ -1,0 +1,13 @@
+#role:fail2ban
+- name: Install fail2ban and dependencies
+  apt:
+    name:
+      - fail2ban
+      - python3-pyinotify
+    state: latest
+
+- name: Configure fail2ban
+  template:
+    src: jail.local.j2
+    dest: /etc/fail2ban/jail.local
+  notify: reload fail2ban

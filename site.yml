@@ -51,16 +51,8 @@
     # TODO php pool?
 
   #role:fail2ban
-  - name: Install fail2ban and dependencies
-    apt:
-      name:
-        - fail2ban
-        - python3-pyinotify
-      state: latest
-
-  - name: Configure fail2ban
-    template: src=fail2ban/jail.local.j2 dest=/etc/fail2ban/jail.local
-    notify: reload fail2ban
+  - name: Set up fail2ban
+    import_role: name=fail2ban
 
   #role:mumble-servers
   - name: Install Mumble
@@ -103,9 +95,6 @@
 
   #TODO: Move this to its own file
   handlers:
-    - name: reload fail2ban
-      service: name=fail2ban state=reloaded
-
     - name: start icecast
       service: name=icecast2 state=started
 
