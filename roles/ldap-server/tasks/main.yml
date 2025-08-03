@@ -1,9 +1,114 @@
+- name: Set debconf selections for slapd install
+  ansible.builtin.debconf:
+    name: slapd
+    question: "{{ item.question }}"
+    vtype: "{{ item.vtype }}"
+    value: "{{ item.value }}"
+  loop:
+    - question: slapd/no_configuration
+      vtype: boolean
+      value: "false"
+    - question: slapd/domain
+      vtype: string
+      value: plug.org.au
+    - question: shared/organization
+      vtype: string
+      value: plug.org.au
+    - question: slapd/password1
+      vtype: password
+      value: "{{ ldap_admin_passphrase }}"
+    - question: slapd/password2
+      vtype: password
+      value: "{{ ldap_admin_passphrase }}"
+    - question: slapd/purge_database
+      vtype: boolean
+      value: "false"
+    - question: slapd/move_old_database
+      vtype: boolean
+      value: "true"
+
+- name: Divert nis schema to make space for rfc2307bis
+  community.general.dpkg_divert:
+    holder: slapd
+    path: "{{ item }}"
+  loop:
+    - /etc/ldap/schema/nis.schema
+    - /etc/ldap/schema/nis.ldif
+
+- name: Install rfc2307bis schema
+  copy:
+    src: rfc2307bis.ldif
+    dest: /etc/ldap/schema/rfc2307bis.ldif
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Symlink rfc2307bis schema over nis schema
+  file:
+    state: link
+    src: rfc2307bis.ldif
+    dest: /etc/ldap/schema/nis.ldif
+
 - name: Install LDAP server and utils
   apt:
     name:
       - slapd
       - ldap-utils
+      - python3-ldap
     state: latest
+
+- name: Only listen on UNIX domain socket
+  lineinfile:
+    name: /etc/default/slapd
+    regexp: "#?SLAPD_SERVICES="
+    line: "SLAPD_SERVICES=ldapi:///"
+  notify: restart slapd
+
+- name: Set default LDAP server URL
+  lineinfile:
+    name: /etc/ldap/ldap.conf
+    regexp: "^#?URI "
+    line: "URI ldapi:///"
+
+- name: Enable memberof slapd module
+  community.general.ldap_attrs:
+    dn: cn=module{0},cn=config
+    attributes:
+      olcModuleLoad:
+        - memberof
+  register: result
+  failed_when:
+    - result.failed
+    - result.details is not defined or (result.details|from_yaml)["desc"] != "Type or value exists"
+
+- name: Configuring memberof overlay
+  community.general.ldap_entry:
+    dn: olcOverlay=memberof,olcDatabase={1}mdb,cn=config
+    objectClass:
+      - olcMemberOf
+      - olcOverlayConfig
+      - olcConfig
+      - top
+    attributes:
+      olcOverlay: memberof
+      olcMemberOfRefInt: "TRUE"
+      olcMemberOfDangling: ignore
+      olcMemberOfGroupOC: groupOfNames
+      olcMemberOfMemberAD: member
+      olcMemberOfMemberOfAD: memberOf
+
+- name: Check if namedobject schema is installed
+  community.general.ldap_search:
+    dn: cn=schema,cn=config
+    scope: onelevel
+    filter: "cn=*namedobject"
+    attrs:
+      - dn
+  register: ldap_schema_namedobject
+
+- name: Install namedobject schema
+  shell: "ldapadd -H ldapi:/// -Y EXTERNAL -f /etc/ldap/schema/namedobject.ldif"
+  when: (ldap_schema_namedobject.results | length) == 0
 
 - name: Create LDAP automatic backup script
   copy:

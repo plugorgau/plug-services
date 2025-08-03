@@ -39,6 +39,7 @@
       - devscripts
       - rsync
       - curl
+      - debconf-utils
     state: latest
 
 - name: Set timezone

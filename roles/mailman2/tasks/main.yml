@@ -40,3 +40,18 @@
     src: ../sites-available/lists.plug.org.au.conf
     dest: /etc/nginx/sites-enabled/lists.plug.org.au.conf
   notify: reload nginx
+
+# Postfix will be unhappy if the aliases file does not exist
+- name: Mailman aliases file must exist
+  copy:
+    force: false
+    content: ''
+    dest: /var/lib/mailman/data/aliases
+    owner: root
+    group: list
+    mode: '0664'
+  register: wrote_mailmam2_aliases
+
+- name: Hash Mailman aliases file
+  shell: postalias hash:/var/lib/mailman/data/aliases
+  when: wrote_mailman2_aliases.changed
