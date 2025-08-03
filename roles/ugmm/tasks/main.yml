@@ -1,0 +1,48 @@
+- name: PHP - Install php-fpm
+  apt: name=php-fpm state=latest
+
+- name: Install UGMM package and dependencies
+  apt:
+    deb: https://github.com/plugorgau/ugmm/releases/download/0.7.0/plug-ugmm_0.7.0_all.deb
+
+- name: Check if plugpen LDAP schema is installed
+  community.general.ldap_search:
+    dn: cn=schema,cn=config
+    scope: onelevel
+    filter: "cn=*plugpen"
+    attrs:
+      - dn
+  register: ldap_schema_plugpen
+
+- name: Install plugpen LDAP schema
+  shell: "ldapadd -H ldapi:/// -Y EXTERNAL -f /etc/ldap/schema/plugpen.ldif"
+  when: (ldap_schema_plugpen.results | length) == 0
+
+- name: Ensure /etc/private exists
+  file:
+    path: /etc/private
+    state: directory
+    owner: root
+    group: root
+    mode: 0711
+
+- name: Install ugmm secrets
+  template:
+    src: ldapconnection.inc.php
+    dest: /etc/private/ldapconnection.inc.php
+    owner: root
+    group: www-data
+    mode: 0640
+
+- name: Install nginx site config
+  template:
+    src: ugmm.plug.org.au.conf
+    dest: /etc/nginx/sites-available/ugmm.plug.org.au.conf
+  #notify: reload nginx
+
+- name: Enable nginx site config
+  file:
+    state: link
+    src: ../sites-available/ugmm.plug.org.au.conf
+    dest: /etc/nginx/sites-enabled/ugmm.plug.org.au.conf
+  #notify: reload nginx
