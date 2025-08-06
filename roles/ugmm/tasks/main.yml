@@ -18,6 +18,37 @@
   shell: "ldapadd -H ldapi:/// -Y EXTERNAL -f /etc/ldap/schema/plugpen.ldif"
   when: (ldap_schema_plugpen.results | length) == 0
 
+- name: Ensure organizational units exist in LDAP
+  community.general.ldap_entry:
+    dn: ou={{ item }},dc=plug,dc=org,dc=au
+    objectClass:
+      - organizationalUnit
+      - top
+    attributes:
+      ou: '{{ item }}'
+    bind_dn: cn=admin,dc=plug,dc=org,dc=au
+    bind_pw: '{{ ldap_admin_passphrase }}'
+  loop:
+    - Users
+    - Groups
+    - UPG
+
+- name: Ensure special groups exist
+  community.general.ldap_entry:
+    dn: cn={{ item }},ou=Groups,dc=plug,dc=org,dc=au
+    objectClass:
+      - groupOfNames
+    attributes:
+      cn: '{{ item }}'
+      member: cn=admin,dc=plug,dc=org,dc=au
+    bind_dn: cn=admin,dc=plug,dc=org,dc=au
+    bind_pw: '{{ ldap_admin_passphrase }}'
+  loop:
+    - currentmembers
+    - pendingmembers
+    - overduemembers
+    - expiredmembers
+
 - name: Ensure /etc/private exists
   file:
     path: /etc/private
