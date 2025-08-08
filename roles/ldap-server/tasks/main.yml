@@ -67,8 +67,13 @@
 - name: Set default LDAP server URL
   lineinfile:
     name: /etc/ldap/ldap.conf
-    regexp: "^#?URI "
-    line: "URI ldapi:///"
+    regexp: "^#?{{ item.key }}\\s"
+    line: "{{ item.key }} {{ item.value }}"
+  loop:
+    - key: URI
+      value: ldapi:///
+    - key: BASE
+      value: dc=plug,dc=org,dc=au
 
 - name: Enable memberof slapd module
   community.general.ldap_attrs:
