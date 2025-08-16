@@ -35,6 +35,17 @@
     - /etc/ldap/schema/nis.schema
     - /etc/ldap/schema/nis.ldif
 
+- name: Ensure LDAP schema directory exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - /etc/ldap
+    - /etc/ldap/schema
+
 - name: Install rfc2307bis schema
   copy:
     src: rfc2307bis.ldif
@@ -54,6 +65,7 @@
     name:
       - slapd
       - ldap-utils
+      - libldap-common
       - python3-ldap
     state: latest
 

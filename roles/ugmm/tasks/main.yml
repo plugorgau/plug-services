@@ -69,11 +69,11 @@
   template:
     src: ugmm.plug.org.au.conf
     dest: /etc/nginx/sites-available/ugmm.plug.org.au.conf
-  #notify: reload nginx
+  notify: reload nginx
 
 - name: Enable nginx site config
   file:
     state: link
     src: ../sites-available/ugmm.plug.org.au.conf
     dest: /etc/nginx/sites-enabled/ugmm.plug.org.au.conf
-  #notify: reload nginx
+  notify: reload nginx

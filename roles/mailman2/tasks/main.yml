@@ -2,7 +2,7 @@
   deb822_repository:
     name: buster
     types: deb
-    uris: http://ftp.au.debian.org/debian
+    uris: http://archive.debian.org/debian
     suites: buster
     components:
       - main
@@ -50,7 +50,7 @@
     owner: root
     group: list
     mode: '0664'
-  register: wrote_mailmam2_aliases
+  register: wrote_mailman2_aliases
 
 - name: Hash Mailman aliases file
   shell: postalias hash:/var/lib/mailman/data/aliases
