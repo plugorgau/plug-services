@@ -32,7 +32,7 @@ UMask			007
 #
 #Socket                  inet:8892@localhost
 #Socket			local:/var/run/opendkim/opendkim.sock
-Socket                  local:/var/spool/postfix/var/run/opendkim/opendkim.sock
+Socket                  local:/var/spool/postfix/opendkim/opendkim.sock
 
 ##  PidFile filename
 ###      default (none)
@@ -83,6 +83,6 @@ UserID                opendkim
 # Specify the list of keys
 KeyTable file:/etc/dkimkeys/keytable
 # Match keys and domains. To use regular expressions in the file, use refile: instead of file:
-SigningTable refile:/etc/dkimkeys/signingtable 
+SigningTable refile:/etc/dkimkeys/signingtable
 # Match a list of hosts whose messages will be signed. By default, only localhost is considered as internal host.
 InternalHosts refile:/etc/dkimkeys/trustedhosts

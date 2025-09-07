@@ -2,7 +2,7 @@
 # Name: Install and configure OpenDKIM
 
 - name: Install OpenDKIM + associated tools
-  apt: 
+  apt:
     name:
       - opendkim
       - opendkim-tools
@@ -10,9 +10,17 @@
 
 # TODO: Copy keys across and ensure correct permissions
 
+- name: Install DKIM private key
+  copy:
+    src: secrets/dkimkeys/iec-2025-test.private
+    dest: /etc/dkimkeys/iec-2025-test.private
+    owner: opendkim
+    group: opendkim
+    mode: '0600'
+
 - name: Create socket directory
   file:
-    path: /var/spool/postfix/var/run/opendkim
+    path: /var/spool/postfix/opendkim
     state: directory
     owner: opendkim
     group: opendkim
@@ -25,6 +33,7 @@
     owner: root
     group: root
     mode: '0644'
+  notify: reload opendkim
 
 - name: OpenDKIM - Configure key table
   template:
@@ -33,6 +42,7 @@
     owner: root
     group: opendkim
     mode: '0644'
+  notify: reload opendkim
 
 - name: OpenDKIM - Configure signing table
   template:
@@ -41,6 +51,7 @@
     owner: root
     group: opendkim
     mode: '0644'
+  notify: reload opendkim
 
 - name: OpenDKIM - Configure trusted hosts
   template:
@@ -49,6 +60,7 @@
     owner: root
     group: opendkim
     mode: '0644'
+  notify: reload opendkim
 
 - name: Add postfix user to opendkim group
   user:
