@@ -2,7 +2,7 @@ $TTL 43200	; 12 hours
 $TTL 3600 ; 1 hour
 $TTL 60 ; 1 minute
 @		IN SOA	ns1.plug.org.au. hostmaster.plug.org.au. (
-				2025083001 ; serial
+				2025091200 ; serial
 				4800       ; refresh (1 hour 20 minutes)
 				900        ; retry (15 minutes)
 				2419200    ; expire (4 weeks)
@@ -14,6 +14,7 @@ $TTL 60 ; 1 minute
 			A	54.252.97.56
 			MX	5 power.plug.org.au.
 			TXT	"v=spf1 a ip4:54.252.97.56 mx ~all"
+                        TXT     "google-site-verification=U2-WxVXTvcqFLz5Da4dy5aBFIUPe60WKKqYBDGbzYcA"
 
 ; sub-domain for ACME DNS-01 validations - dynamic entries only
 _acme-challenge		NS	ns1.plug.org.au.
