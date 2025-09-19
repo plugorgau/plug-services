@@ -1,11 +1,12 @@
 ---
 # Name: Install and configure SpamAssassin
 
-- name: Install SpamAssassin and spamc
-  apt: 
+- name: Install SpamAssassin, spamc, and spamass-milter
+  apt:
     name:
       - spamassassin
       - spamc
+      - spamass-milter
     state: latest
 
 - name: Configure SpamAssassin
@@ -22,6 +23,12 @@
     create: true
     regexp: '^CRON='
     line: CRON=1
+
+- name: Run spamd unprivileged
+  lineinfile:
+    dest: /etc/default/spamd
+    regexp: '^OPTIONS='
+    line: 'OPTIONS="-u debian-spamd --nouser-config --create-prefs --max-children 5 --helper-home-dir"'
 
 - name: Enable and start SpamAssassin service
   systemd:
