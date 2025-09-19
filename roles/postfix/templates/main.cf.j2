@@ -22,7 +22,7 @@ readme_directory = no
 
 # See http://www.postfix.org/COMPATIBILITY_README.html -- default to 2 on
 # fresh installs.
-compatibility_level = 2
+compatibility_level = 3.6
 
 # TLS parameters
 smtpd_tls_cert_file = /etc/letsencrypt/live/mail.plug.org.au/cert.pem
@@ -85,16 +85,12 @@ smtpd_recipient_restrictions = permit_mynetworks, permit_auth_destination, permi
 # (opportunistic TLS)
 smtp_tls_security_level = may
 
-# scan content with clamav
-content_filter = scan:127.0.0.1:10026
-
-# Disable OpenDKIM
-# OpenDKIM stuff
-#milter_default_action = accept
-#milter_protocol = 6
-# from inside the chroot, the socket will be in /var/run/opendkim 
-#smtpd_milters = unix:opendkim/opendkim.sock
-#non_smtpd_milters = unix:opendkim/opendkim.sock
+# Mail filters
+milter_default_action = accept
+milter_protocol = 6
+# from inside the chroot, the socket will be in /var/run/opendkim
+smtpd_milters = unix:opendkim/opendkim.sock, unix:spamass/spamass.sock
+non_smtpd_milters = unix:opendkim/opendkim.sock
 
 #####################################
 # Things we might be able to remove #
