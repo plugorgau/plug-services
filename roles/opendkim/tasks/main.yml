@@ -12,9 +12,9 @@
   copy:
     src: secrets/dkimkeys/{{ item }}
     dest: /etc/dkimkeys/{{ item }}
-    owner: root
+    owner: opendkim
     group: opendkim
-    mode: '0640'
+    mode: '0600'
   loop:
     - iec-2025-test.private
     - iec2025.private
