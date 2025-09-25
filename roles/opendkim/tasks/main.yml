@@ -8,15 +8,16 @@
       - opendkim-tools
     state: latest
 
-# TODO: Copy keys across and ensure correct permissions
-
-- name: Install DKIM private key
+- name: Install DKIM private keys
   copy:
-    src: secrets/dkimkeys/iec-2025-test.private
-    dest: /etc/dkimkeys/iec-2025-test.private
-    owner: opendkim
+    src: secrets/dkimkeys/{{ item }}
+    dest: /etc/dkimkeys/{{ item }}
+    owner: root
     group: opendkim
-    mode: '0600'
+    mode: '0640'
+  loop:
+    - iec-2025-test.private
+    - iec2025.private
 
 - name: Create socket directory
   file:

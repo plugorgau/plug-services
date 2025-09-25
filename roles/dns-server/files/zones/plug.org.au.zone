@@ -2,7 +2,7 @@ $TTL 43200	; 12 hours
 $TTL 3600 ; 1 hour
 $TTL 60 ; 1 minute
 @		IN SOA	ns1.plug.org.au. hostmaster.plug.org.au. (
-				2025091200 ; serial
+				2025092500 ; serial
 				4800       ; refresh (1 hour 20 minutes)
 				900        ; retry (15 minutes)
 				2419200    ; expire (4 weeks)
@@ -13,8 +13,12 @@ $TTL 60 ; 1 minute
 			NS	ns4.whiteitsolutions.com.au.
 			A	54.252.97.56
 			MX	5 power.plug.org.au.
-			TXT	"v=spf1 a ip4:54.252.97.56 mx ~all"
+			TXT	"v=spf1 a ip4:54.252.97.56 ip4:103.249.238.24 mx ~all"
                         TXT     "google-site-verification=U2-WxVXTvcqFLz5Da4dy5aBFIUPe60WKKqYBDGbzYcA"
+
+iec2025._domainkey	IN	TXT	( "v=DKIM1; h=sha256; k=rsa; "
+	  "p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2iFdsfSvBy4kq6oqWCfiIMcPz+7Xio2e1OnIeYcHyzULDWqREZmgl/qd5yYGAwzAo9AQ2x5VpWisS/52k9MQuyhpN7ZRR8s0YI182vS7Gtw/NzhQGz5n1I8ZbHb7UBkYcVVTRCgOsNF3++dctIJdkGTFPy1Uu/vIzXBXUR3iCMxAKMb1r3jZ2df/MArbQD6mlUOA7Q1iWVFa4C"
+	  "UCsSuc9YoGlShYcld2KrqNIMo2Ge/hWYPk6VNUncoOiAcwaDsHteeystlbVLUngqGeX/k6AYBKDqjay5NUWkH3FcndZfx91o+pTSM23XvRWPm8PNvaETPcpJMaVRczdIF/5HrsMQIDAQAB" )  ; ----- DKIM key iec2025 for plug.org.au
 
 ; sub-domain for ACME DNS-01 validations - dynamic entries only
 _acme-challenge		NS	ns1.plug.org.au.
