@@ -24,9 +24,10 @@ Usage
 
 * Clone the plug-services repositories
 
-`git clone https://github.com/plugorgau/plug-services.git`
-
-`git clone git@github.com:plugorgau/plug-services-secrets.git`
+```sh
+git clone https://github.com/plugorgau/plug-services.git`
+git clone git@github.com:plugorgau/plug-services-secrets.git
+```
 
 * Follow the instructions for [the plug-services-secrets repository](https://github.com/plugorgau/plug-services-secrets)
 
@@ -34,7 +35,9 @@ Usage
 
 To bootstrap a new node, use the bootstrap keypair when creating it, ensure it is listed in the bootstrap inventory file (bootstrap), then run the below command replacing "user" with the initial user - this should be something like "ubuntu" or "admin". If your user requires a password for login or sudo access, add --ask-pass and --ask-become-pass as appropriate.
 
-` ansible-playbook bootstrap.yml -u user -i bootstrap `
+```sh
+ansible-playbook bootstrap.yml -u user -i bootstrap
+```
 
 Once the bootstrap playbook has completed, login as the glass management user ("glass") and check out plug-services and plug-services-secrets in the home directory, once again following the instructions for [the plug-services-secrets repository](https://github.com/plugorgau/plug-services-secrets).
 
@@ -42,11 +45,15 @@ Once the bootstrap playbook has completed, login as the glass management user ("
 
 Once keys are in place, running the playbook is simple. On the new host, change directory to plug-services, then...
 
-` ansible-playbook site.yml -i inventory `
+```sh
+ansible-playbook site.yml -i inventory
+```
 
 You may also find it handy to do a "dry run" using Ansible's check mode:
 
-` ansible-playbook site.yml -i inventory --check `
+```sh
+ansible-playbook site.yml -i inventory --check
+```
 
 **Please note**: Currently the initial Ansible run will fail due to the EFS Backups vol not being mounted. Do a run, then follow post-deployment items, then do a second run. If you are running this outside of AWS, you may need to create a dummy /srv/backup/borg-power folder.
 
