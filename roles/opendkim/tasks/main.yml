@@ -12,9 +12,9 @@
   copy:
     src: secrets/dkimkeys/{{ item }}
     dest: /etc/dkimkeys/{{ item }}
-    owner: opendkim
+    owner: root
     group: opendkim
-    mode: '0600'
+    mode: '0640'
   loop:
     - iec-2025-test.private
     - iec2025.private
@@ -24,7 +24,7 @@
     path: /var/spool/postfix/opendkim
     state: directory
     owner: opendkim
-    group: opendkim
+    group: postfix
     mode: '0710'
 
 - name: Configure OpenDKIM
@@ -62,9 +62,3 @@
     group: opendkim
     mode: '0644'
   notify: reload opendkim
-
-- name: Add postfix user to opendkim group
-  user:
-    name: postfix
-    groups: opendkim
-    append: yes
