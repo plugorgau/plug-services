@@ -16,7 +16,7 @@
   - dovecot
   - postfix
   - spamassassin
-  - clamav
+  #- clamav
   - opendkim
   - pflogsumm
 #  - opendmarc
