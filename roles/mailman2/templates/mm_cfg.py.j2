@@ -58,7 +58,7 @@ MAILMAN_SITE_LIST = 'mailman'
 #-------------------------------------------------------------
 # If you change these, you have to configure your http server
 # accordingly (Alias and ScriptAlias directives in most httpds)
-DEFAULT_URL_PATTERN = 'http://%s/cgi-bin/mailman/'
+DEFAULT_URL_PATTERN = 'https://%s/mailman/'
 IMAGE_LOGOS         = '/images/mailman/'
 
 #-------------------------------------------------------------
@@ -96,6 +96,11 @@ DEFAULT_SEND_REMINDERS = 0
 # /usr/share/doc/mailman/README.Debian first.
 MTA='Postfix'
 POSTFIX_STYLE_VIRTUAL_DOMAINS = ['lists.plug.org.au']
+
+#-------------------------------------------------------------
+# Perform delivery via a localhost smtpd that uses local delivery filters
+SMTPHOST = 'localhost'
+SMTPPORT = 8025
 
 #-------------------------------------------------------------
 # Uncomment if you want to filter mail with SpamAssassin. For
