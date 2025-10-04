@@ -76,12 +76,14 @@ add_virtualhost(DEFAULT_URL_HOST, DEFAULT_EMAIL_HOST)
 DEFAULT_SERVER_LANGUAGE = 'en'
 
 #-------------------------------------------------------------
-# Iirc this was used in pre 2.1, leave it for now
-USE_ENVELOPE_SENDER    = 0              # Still used?
-
-#-------------------------------------------------------------
 # Unset send_reminders on newly created lists
 DEFAULT_SEND_REMINDERS = 0
+
+#-------------------------------------------------------------
+# Rename incoming DKIM headers, and munge the From: address of
+# messages from domains with a DMARC reject or quarantine policy.
+REMOVE_DKIM_HEADERS = 3
+DEFAULT_DMARC_MODERATION_ACTION = 1
 
 #-------------------------------------------------------------
 # Uncomment this if you configured your MTA such that it
