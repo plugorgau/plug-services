@@ -4,8 +4,8 @@
 - name: Set mumble SSL
   # https://stackoverflow.com/questions/24334115/ansible-lineinfile-for-several-lines
   lineinfile:
-    name: /etc/mumble-server.ini
-    regexp: "^#? *{{ item.key | regex_escape() }}="
+    name: /etc/mumble/mumble-server.ini
+    regexp: "^[#;]? *{{ item.key | regex_escape() }}="
     line: "{{ item.key }}={{ item.value }}"
   with_dict:
     'sslCert': '/etc/letsencrypt/live/plug.org.au/fullchain.pem'

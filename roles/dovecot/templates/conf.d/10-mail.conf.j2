@@ -14,20 +14,27 @@
 #
 # There are a few special variables you can use, eg.:
 #
-#   %u - username
-#   %n - user part in user@domain, same as %u if there's no domain
-#   %d - domain part in user@domain, empty if there's no domain
-#   %h - home directory
+#   %{user} - username
+#   %{user|username} - user part in user@domain, same as %u if there's no domain
+#   %{user|domain} - domain part in user@domain, empty if there's no domain
+#   %{home} - home directory
 #
-# See doc/wiki/Variables.txt for full list. Some examples:
+# See https://doc.dovecot.org/latest/core/settings/variables.html for full list
+# of variables.
 #
-#   mail_location = maildir:~/Maildir
-#   mail_location = mbox:~/mail:INBOX=/var/mail/%u
-#   mail_location = mbox:/var/mail/%d/%1n/%n:INDEX=/var/indexes/%d/%1n/%n
+# Example:
+#  mail_driver = maildir
+#  mail_path = ~/Maildir
+#  mail_inbox_path = ~/Maildir/.INBOX
 #
-# <doc/wiki/MailLocation.txt>
-#
-mail_location = maildir:~/Maildir
+
+# Debian defaults
+# Note that upstream considers mbox deprecated and strongly recommends
+# against its use in production environments. See further information
+# at
+# https://doc.dovecot.org/2.4.0/core/config/mailbox/formats/mbox.html
+mail_driver = maildir
+mail_path = ~/Maildir
 
 # If you need to set multiple mailbox locations or want to change default
 # namespace settings, you can do it by defining namespace sections.
@@ -53,9 +60,10 @@ namespace inbox {
   #prefix = 
 
   # Physical location of the mailbox. This is in same format as
-  # mail_location, which is also the default for it.
-  #location =
-
+  # mail location, which is also the default for it.
+  # mail_driver = 
+  # mail_path = 
+  #
   # There can be only one INBOX, and this setting defines which namespace
   # has it.
   inbox = yes
@@ -80,18 +88,20 @@ namespace inbox {
 }
 
 # Example shared namespace configuration
-#namespace {
+#namespace shared {
   #type = shared
   #separator = /
 
   # Mailboxes are visible under "shared/user@domain/"
-  # %%n, %%d and %%u are expanded to the destination user.
-  #prefix = shared/%%u/
+  # $user, $domain and $username are expanded to the destination user.
+  #prefix = shared/$user/
 
-  # Mail location for other users' mailboxes. Note that %variables and ~/
-  # expands to the logged in user's data. %%n, %%d, %%u and %%h expand to the
+  # Mail location for other users' mailboxes. Note that %{variables} and ~/
+  # expands to the logged in user's data. %{owner_user} and %{owner_home}
   # destination user's data.
-  #location = maildir:%%h/Maildir:INDEX=~/Maildir/shared/%%u
+  #mail_driver = maildir
+  #mail_path = %{owner_home}/Maildir
+  #mail_index_path = ~/Maildir/shared/%{owner_user}
 
   # Use the default namespace for saving subscriptions.
   #subscriptions = no
@@ -104,14 +114,14 @@ namespace inbox {
 
 # System user and group used to access mails. If you use multiple, userdb
 # can override these by returning uid or gid fields. You can use either numbers
-# or names. <doc/wiki/UserIds.txt>
+# or names. <https://doc.dovecot.org/latest/core/config/system_users.html#uids>
 #mail_uid =
 #mail_gid =
 
-# Group to enable temporarily for privileged operations. Currently this is
+#  Group to enable temporarily for privileged operations. Currently this is
 # used only with INBOX when either its initial creation or dotlocking fails.
 # Typically this is set to "mail" to give access to /var/mail.
-#mail_privileged_group =
+mail_privileged_group = mail
 
 # Grant access to these supplementary groups for mail processes. Typically
 # these are used to set up access to shared mailboxes. Note that it may be
@@ -128,7 +138,11 @@ namespace inbox {
 
 # Dictionary for key=value mailbox attributes. This is used for example by
 # URLAUTH and METADATA extensions.
-#mail_attribute_dict =
+#mail_attribute {
+#  dict file {
+#    path = %{home}/Maildir/dovecot-attributes
+#  }
+#}
 
 # A comment or note that is associated with the server. This value is
 # accessible for authenticated users through the IMAP METADATA server
@@ -165,7 +179,10 @@ namespace inbox {
 # methods. NFS users: flock doesn't work, remember to change mmap_disable.
 #lock_method = fcntl
 
-# Directory in which LDA/LMTP temporarily stores incoming mails >128 kB.
+# Directory where mails can be temporarily stored. Usually it's used only for
+# mails larger than >= 128 kB. It's used by various parts of Dovecot, for
+# example LDA/LMTP while delivering large mails or zlib plugin for keeping
+# uncompressed mails.
 #mail_temp_dir = /tmp
 
 # Valid UID range for users, defaults to 500 and above. This is mostly
@@ -208,11 +225,16 @@ namespace inbox {
 #auth_socket_path = /var/run/dovecot/auth-userdb
 
 # Directory where to look up mail plugins.
-#mail_plugin_dir = /usr/lib/dovecot/modules
+#mail_plugin_dir = /usr/lib/dovecot
 
 # Space separated list of plugins to load for all services. Plugins specific to
 # IMAP, LDA, etc. are added to this list in their own .conf files.
-#mail_plugins = 
+#mail_plugins =
+#
+# To add plugins, use
+#mail_plugins {
+#  plugin = yes
+#}
 
 ##
 ## Mailbox handling optimizations
@@ -220,7 +242,16 @@ namespace inbox {
 
 # Mailbox list indexes can be used to optimize IMAP STATUS commands. They are
 # also required for IMAP NOTIFY extension to be enabled.
-#mailbox_list_index = no
+#mailbox_list_index = yes
+
+# Trust mailbox list index to be up-to-date. This reduces disk I/O at the cost
+# of potentially returning out-of-date results after e.g. server crashes.
+# The results will be automatically fixed once the folders are opened.
+#mailbox_list_index_very_dirty_syncs = yes
+
+# Should INBOX be kept up-to-date in the mailbox list index? By default it's
+# not, because most of the mailbox accesses will open INBOX anyway.
+#mailbox_list_index_include_inbox = no
 
 # The minimum number of mails in a mailbox before updates are done to cache
 # file. This allows optimizing Dovecot's behavior to do less disk writes at
@@ -247,6 +278,19 @@ namespace inbox {
 # How often to scan for stale temporary files and delete them (0 = never).
 # These should exist only after Dovecot dies in the middle of saving mails.
 #mail_temp_scan_interval = 1w
+
+# How many slow mail accesses sorting can perform before it returns failure.
+# With IMAP the reply is: NO [LIMIT] Requested sort would have taken too long.
+# The untagged SORT reply is still returned, but it's likely not correct.
+#mail_sort_max_read_count = 0
+
+protocol !indexer-worker {
+  # If folder vsize calculation requires opening more than this many mails from
+  # disk (i.e. mail sizes aren't in cache already), return failure and finish
+  # the calculation via indexer process. Disabled by default. This setting must
+  # be 0 for indexer-worker processes.
+  #mail_vsize_bg_after_count = 0
+}
 
 ##
 ## Maildir-specific settings
@@ -295,14 +339,8 @@ namespace inbox {
 # in is important to avoid deadlocks if other MTAs/MUAs are using multiple
 # locking methods as well. Some operating systems don't allow using some of
 # them simultaneously.
-#
-# The Debian value for mbox_write_locks differs from upstream Dovecot. It is
-# changed to be compliant with Debian Policy (section 11.6) for NFS safety.
-#       Dovecot: mbox_write_locks = dotlock fcntl
-#       Debian:  mbox_write_locks = fcntl dotlock
-#
 #mbox_read_locks = fcntl
-#mbox_write_locks = fcntl dotlock
+#mbox_write_locks = dotlock fcntl
 
 # Maximum time to wait for lock (all of them) before aborting.
 #mbox_lock_timeout = 5 mins
@@ -347,7 +385,7 @@ namespace inbox {
 ##
 
 # Maximum dbox file size until it's rotated.
-#mdbox_rotate_size = 2M
+#mdbox_rotate_size = 10M
 
 # Maximum dbox file age until it's rotated. Typically in days. Day begins
 # from midnight, so 1d = today, 2d = yesterday, etc. 0 = check disabled.
@@ -358,28 +396,13 @@ namespace inbox {
 # filesystems (ext4, xfs).
 #mdbox_preallocate_space = no
 
-##
-## Mail attachments
-##
-
-# sdbox and mdbox support saving mail attachments to external files, which
-# also allows single instance storage for them. Other backends don't support
-# this for now.
-
-# Directory root where to store mail attachments. Disabled, if empty.
-#mail_attachment_dir =
-
-# Attachments smaller than this aren't saved externally. It's also possible to
-# write a plugin to disable saving specific attachments externally.
-#mail_attachment_min_size = 128k
-
-# Filesystem backend to use for saving attachments:
-#  posix : No SiS done by Dovecot (but this might help FS's own deduplication)
-#  sis posix : SiS with immediate byte-by-byte comparison during saving
-#  sis-queue posix : SiS with delayed comparison and deduplication
-#mail_attachment_fs = sis posix
-
-# Hash format to use in attachment filenames. You can add any text and
-# variables: %{md4}, %{md5}, %{sha1}, %{sha256}, %{sha512}, %{size}.
-# Variables can be truncated, e.g. %{sha256:80} returns only first 80 bits
-#mail_attachment_hash = %{sha1}
+# Settings to control adding $HasAttachment or $HasNoAttachment keywords.
+# By default, all MIME parts with Content-Disposition=attachment, or inlines
+# with filename parameter are consired attachments.
+#   add-flags - Add the keywords when saving new mails or when fetching can
+#      do it efficiently.
+#   content-type=type or !type - Include/exclude content type. Excluding will
+#     never consider the matched MIME part as attachment. Including will only
+#     negate an exclusion (e.g. content-type=!foo/* content-type=foo/bar).
+#   exclude-inlined - Exclude any Content-Disposition=inline MIME part.
+#mail_attachment_detection_options =

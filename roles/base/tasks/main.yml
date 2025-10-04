@@ -1,16 +1,16 @@
 ---
 # Name: Install and configure some base packages
 
-- name: Apt - enable bookworm-backports
+- name: Apt - enable trixie-backports
   deb822_repository:
-    name: bookworm-backports
+    name: trixie-backports
     types: deb
     uris: http://deb.debian.org/debian
-    suites: bookworm-backports
+    suites: trixie-backports
     components:
       - main
       - contrib
-      - non-free
+      - non-free-firmware
     signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
 
 - name: Install essential utils
