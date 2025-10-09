@@ -36,7 +36,6 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 # See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
 # information on enabling SSL in the smtp client.
 
-smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 myhostname = iec.plug.org.au
 alias_maps = hash:/etc/aliases, hash:/var/lib/mailman/data/aliases
 alias_database = hash:/etc/aliases
@@ -73,7 +72,13 @@ smtpd_sasl_security_options = noanonymous
 smtpd_sasl_local_domain = $myhostname
 cyrus_sasl_config_path=/etc/postfix/sasl
 
+smtpd_delay_reject = no
+smtpd_helo_required = yes
+smtpd_helo_restrictions = permit_mynetworks, sleep 2, reject_invalid_helo_hostname, reject_unknown_helo_hostname, reject_non_fqdn_helo_hostname
+smtpd_sender_restrictions = reject_unknown_sender_domain
 smtpd_recipient_restrictions = permit_mynetworks, permit_auth_destination, permit_sasl_authenticated, reject
+smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, defer_unauth_destination
+smtpd_data_restrictions = reject_unauth_pipelining
 
 # Use non-default Diffie-Hellman Prime
 # B: TODO - THIS MAY BREAK SMTP
