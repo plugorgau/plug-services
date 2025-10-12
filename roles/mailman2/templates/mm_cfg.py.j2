@@ -77,6 +77,11 @@ add_virtualhost(DEFAULT_URL_HOST, DEFAULT_EMAIL_HOST)
 DEFAULT_SERVER_LANGUAGE = 'en'
 
 #-------------------------------------------------------------
+# Protect the subscribe forms with reCAPTCHA
+RECAPTCHA_SITE_KEY = '{{ mailman_recaptcha_site_key }}'
+RECAPTCHA_SECRET_KEY = '{{ mailman_recaptcha_secret_key }}'
+
+#-------------------------------------------------------------
 # Unset send_reminders on newly created lists
 DEFAULT_SEND_REMINDERS = 0
 
