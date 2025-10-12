@@ -2,7 +2,7 @@ $TTL 43200	; 12 hours
 $TTL 3600 ; 1 hour
 $TTL 60 ; 1 minute
 @		IN SOA	ns1.plug.org.au. hostmaster.plug.org.au. (
-				2025092501 ; serial
+				2025101200 ; serial
 				4800       ; refresh (1 hour 20 minutes)
 				900        ; retry (15 minutes)
 				2419200    ; expire (4 weeks)
@@ -11,8 +11,8 @@ $TTL 60 ; 1 minute
 			NS	ns1.plug.org.au.
 			NS	ns1.whiteitsolutions.com.au.
 			NS	ns4.whiteitsolutions.com.au.
-			A	54.252.97.56
-			MX	5 power.plug.org.au.
+			A	103.249.238.24
+			MX	5 mail.plug.org.au.
 			TXT	"v=spf1 a ip4:54.252.97.56 ip4:103.249.238.24 mx ~all"
                         TXT     "google-site-verification=U2-WxVXTvcqFLz5Da4dy5aBFIUPe60WKKqYBDGbzYcA"
 
@@ -60,9 +60,8 @@ services 		CNAME	iec
 ugmm			CNAME   iec
 
 ; Services
-lists			CNAME   power
-lists2			CNAME   iec
-www			CNAME	power
+lists			CNAME   iec
+www			CNAME	iec
 ; Some round-robin A records not running, pinning to mussel
 ; irc			CNAME	irc.uniirc.com.
 irc			CNAME	mussel-out.ucc.asn.au.
