@@ -27,9 +27,15 @@ compatibility_level = 3.6
 # TLS parameters
 smtpd_tls_cert_file = /etc/letsencrypt/live/mail.plug.org.au/cert.pem
 smtpd_tls_key_file = /etc/letsencrypt/live/mail.plug.org.au/privkey.pem
-smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
-smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
-smtpd_use_tls=yes
+
+smtpd_tls_security_level = may
+smtpd_tls_mandatory_protocols = >=TLSv1.2
+smtpd_tls_protocols           = >=TLSv1.2
+
+smtp_tls_security_level = may
+smtp_tls_mandatory_protocols  = >=TLSv1.2
+smtp_tls_protocols            = >=TLSv1.2
+
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
@@ -40,7 +46,7 @@ myhostname = iec.plug.org.au
 alias_maps = hash:/etc/aliases, hash:/var/lib/mailman/data/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
-mydestination = $myhostname, plug.org.au, plug.linux.org.au, po1.plug.org.au, localhost
+mydestination = $myhostname, plug.org.au, plug.linux.org.au, po1.plug.org.au, localhost.plug.org.au, localhost
 # This is possibly better:
 # mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 relayhost = 
