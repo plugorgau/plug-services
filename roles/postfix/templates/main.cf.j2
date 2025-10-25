@@ -73,7 +73,7 @@ mailbox_size_limit = 1073741824
 # SMTP-Auth settings
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
-smtpd_sasl_auth_enable = yes
+smtpd_sasl_auth_enable = no
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_local_domain = $myhostname
 cyrus_sasl_config_path=/etc/postfix/sasl
@@ -83,7 +83,7 @@ smtpd_helo_required = yes
 smtpd_helo_restrictions = permit_mynetworks, sleep 2, reject_invalid_helo_hostname, reject_unknown_helo_hostname, reject_non_fqdn_helo_hostname
 smtpd_sender_restrictions = reject_unknown_sender_domain
 smtpd_recipient_restrictions = permit_mynetworks, permit_auth_destination, permit_sasl_authenticated, reject
-smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, defer_unauth_destination
+smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
 smtpd_data_restrictions = reject_unauth_pipelining
 
 # Use non-default Diffie-Hellman Prime
