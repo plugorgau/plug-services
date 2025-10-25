@@ -6,3 +6,6 @@
 
 - name: run postalias
   shell: "postalias /etc/aliases"
+
+- name: run postmap transport
+  shell: "postmap /etc/postfix/transport"

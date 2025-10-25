@@ -2,7 +2,7 @@
 # Name: Install and configure Postfix
 
 - name: Install Postfix
-  apt: 
+  apt:
     name:
       - postfix
     state: latest
@@ -41,6 +41,15 @@
     group: root
     mode: '0644'
   notify: run postalias
+
+- name: Configure Postfix transports
+  template:
+    src: transport.j2
+    dest: /etc/postfix/transport
+    owner: root
+    group: root
+    mode: '0644'
+  notify: run postmap transport
 
 - name: Install a strong 2048-bit Diffie-Hellman group file
   copy:

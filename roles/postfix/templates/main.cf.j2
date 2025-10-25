@@ -105,6 +105,13 @@ milter_protocol = 6
 smtpd_milters = unix:opendkim/opendkim.sock, unix:spamass/spamass.sock
 non_smtpd_milters = unix:opendkim/opendkim.sock
 
+# Configuration for talking with SMTP servers that rate limit us
+transport_maps = hash:/etc/postfix/transport
+slow_smtp_initial_destination_concurrency = 1
+slow_smtp_destination_concurrency_limit = 4
+slow_smtp_destination_recipient_limit = 2
+slow_smtp_destination_rate_delay = 1s
+
 #####################################
 # Things we might be able to remove #
 #####################################

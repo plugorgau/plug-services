@@ -67,6 +67,8 @@ smtp      unix  -       -       y       -       -       smtp
 relay     unix  -       -       y       -       -       smtp
         -o syslog_name=postfix/$service_name
 #       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
+slow_smtp unix  -       -       y       -       -       smtp
+        -o syslog_name=postfix/$service_name
 showq     unix  n       -       y       -       -       showq
 error     unix  -       -       y       -       -       error
 retry     unix  -       -       y       -       -       error
