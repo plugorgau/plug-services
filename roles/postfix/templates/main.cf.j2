@@ -109,7 +109,7 @@ non_smtpd_milters = unix:opendkim/opendkim.sock
 transport_maps = hash:/etc/postfix/transport
 slow_smtp_initial_destination_concurrency = 1
 slow_smtp_destination_concurrency_limit = 1
-slow_smtp_destination_recipient_limit = 2
+slow_smtp_destination_recipient_limit = 1
 #slow_smtp_destination_rate_delay = 120s
 slow_smtp_transport_rate_delay = 10m
 
