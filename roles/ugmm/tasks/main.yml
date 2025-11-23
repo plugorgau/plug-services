@@ -3,7 +3,7 @@
 
 - name: Install UGMM package and dependencies
   apt:
-    deb: https://github.com/plugorgau/ugmm/releases/download/0.7.3/plug-ugmm_0.7.3_all.deb
+    deb: https://github.com/plugorgau/ugmm/releases/download/0.7.4/plug-ugmm_0.7.4_all.deb
 
 - name: Check if plugpen LDAP schema is installed
   community.general.ldap_search:
