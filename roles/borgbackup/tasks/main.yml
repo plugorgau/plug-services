@@ -2,6 +2,7 @@
   apt:
     name:
       - borgbackup
+      - borgmatic
       - fuse
     state: latest
 
@@ -51,3 +52,36 @@
     state: link
     src: /root/bin/borgauto.sh
     dest: /etc/cron.daily/borgbackup
+
+- name: Create borgmatic config directory
+  file:
+    path: /etc/borgmatic
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create borgmatic config directory
+  file:
+    path: /etc/borgmatic/credentials
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Install borgmatic rsync.net credentials
+  copy:
+    content: "{{ borg_passphrase }}"
+    dest: /etc/borgmatic/credentials/rsync.net.txt
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Install borgmatic config
+  copy:
+    src: config.yaml
+    #dest: /etc/borgmatic/config.yaml
+    dest: /home/glass/borgmatic-config.yaml
+    owner: root
+    group: root
+    mode: 0755

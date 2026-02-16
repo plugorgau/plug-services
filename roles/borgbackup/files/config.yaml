@@ -1,0 +1,38 @@
+repositories:
+  - label: rsync.net
+    path: ssh://19678@ch-s012.rsync.net:22/data2/home/19678/ruby/
+
+ssh_command: 'ssh -i /root/.ssh/borgkey'
+remote_path: borg14
+
+encryption_passphrase: '{credential file /etc/borgmatic/credentials/rsync.net.txt}'
+
+source_directories:
+  - /
+one_file_system: true
+exclude_caches: true
+exclude_patterns:
+  - '*.pyc'
+  - '/home/*/.cache/'
+  - '/var/log/borgbackup/'
+  - '/var/lib/apt/lists/'
+  - '/var/cache/'
+  - '/var/tmp/'
+  - '/srv/efs/'
+  - '/srv/backup/'
+  - '/tmp'
+
+archive_name_format: '{hostname}-{now:%Y-%m-%dT%H:%M:%S}'
+match_archives: '{hostname}-*'
+compression: lz4
+
+## These options require borgmatic 2.0
+#statistics: true
+#list_details: true
+#file_list_option: AME
+#log_file: /var/log/borgbackup/bogmatic.log
+
+keep_daily: 7
+keep_weekly: 4
+keep_monthly: -1
+keep_yearly: -1
