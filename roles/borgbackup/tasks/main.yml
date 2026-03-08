@@ -76,7 +76,7 @@
     dest: /etc/borgmatic/credentials/rsync.net.txt
     owner: root
     group: root
-    mode: 0700
+    mode: 0600
 
 - name: Install borgmatic config
   copy:
@@ -85,4 +85,4 @@
     #dest: /home/glass/borgmatic-config.yaml
     owner: root
     group: root
-    mode: 0755
+    mode: 0644
