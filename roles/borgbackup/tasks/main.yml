@@ -47,10 +47,11 @@
     key: ch-s012.rsync.net ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO5lfML3qjBiDXi4yh3xPoXPHqIOeLNp66P3Unrl+8g3
     path: /root/.ssh/known_hosts
 
-- name: Enable daily backups via cron
+- name: Disable old daily backups via cron
   file:
-    state: link
-    src: /root/bin/borgauto.sh
+    state: absent
+    #state: link
+    #src: /root/bin/borgauto.sh
     dest: /etc/cron.daily/borgbackup
 
 - name: Create borgmatic config directory
@@ -80,8 +81,8 @@
 - name: Install borgmatic config
   copy:
     src: config.yaml
-    #dest: /etc/borgmatic/config.yaml
-    dest: /home/glass/borgmatic-config.yaml
+    dest: /etc/borgmatic/config.yaml
+    #dest: /home/glass/borgmatic-config.yaml
     owner: root
     group: root
     mode: 0755
