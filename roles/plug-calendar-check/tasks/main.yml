@@ -1,0 +1,42 @@
+- name: Create calendar-check user
+  user:
+    name: calendar-check
+    comment: PLUG calendar-check user
+    system: true
+    home: /nonexistent
+    create_home: false
+
+- name: Install calendar-check dependencies
+  apt:
+    name:
+      - python3
+      - python3-dateutil
+      - python3-icalendar
+      - python3-jinja2
+
+- name: Check out calendar-check source from git
+  git:
+    repo: https://github.com/plugorgau/calendar-check.git
+    dest: /usr/local/share/plug-calendar-check/
+
+- name: Install systemd units to run the upcoming-events script
+  copy:
+    src: '{{ item }}'
+    dest: '/etc/systemd/system/{{ item }}'
+    owner: root
+    group: root
+    mode: '0660'
+  loop:
+    - plug-upcoming-events.service
+    - plug-upcoming-events.timer
+  register: plug_calendar_check_units_updated
+
+- name: Reload systemd if needed
+  when: plug_calendar_check_units_updated.changed
+  systemd_service:
+    daemon_reload: true
+
+- name: Enable the timer service
+  systemd_service:
+    name: plug-upcoming-events.timer
+    enabled: true

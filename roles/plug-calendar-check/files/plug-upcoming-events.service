@@ -1,0 +1,10 @@
+[Unit]
+Description=Check for upcoming events in the PLUG calendar
+
+[Service]
+Type=oneshot
+ProtectSystem=strict
+ProtectHome=read-only
+User=calendar-check
+Group=calendar-check
+ExecStart=/usr/local/share/plug-calendar-check/plug-upcoming-events.py

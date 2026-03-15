@@ -16,5 +16,6 @@
     - mumble-server
     - icecast
     - mailman2
+    - plug-calendar-check
 
 - import_playbook: mail_servers.yml
