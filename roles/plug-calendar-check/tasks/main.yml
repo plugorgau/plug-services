@@ -25,7 +25,7 @@
     dest: '/etc/systemd/system/{{ item }}'
     owner: root
     group: root
-    mode: '0660'
+    mode: '0664'
   loop:
     - plug-upcoming-events.service
     - plug-upcoming-events.timer
@@ -40,3 +40,4 @@
   systemd_service:
     name: plug-upcoming-events.timer
     enabled: true
+    state: started
