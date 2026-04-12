@@ -1,6 +1,8 @@
 repositories:
   - label: rsync.net
     path: ssh://19678@ch-s012.rsync.net:22/data2/home/19678/ruby/
+  - label: pchq
+    path: ssh://pcadmin@plug.michael5collins.com:2224/mnt/PLUG/backups/plugv1
 
 ssh_command: 'ssh -i /root/.ssh/borgkey'
 remote_path: borg14
