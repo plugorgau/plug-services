@@ -2,7 +2,7 @@ $TTL 43200	; 12 hours
 $TTL 3600 ; 1 hour
 $TTL 60 ; 1 minute
 @		IN SOA	ns1.plug.org.au. hostmaster.plug.org.au. (
-				2026021800 ; serial
+				2026062000 ; serial
 				4800       ; refresh (1 hour 20 minutes)
 				900        ; retry (15 minutes)
 				2419200    ; expire (4 weeks)
@@ -15,6 +15,7 @@ $TTL 60 ; 1 minute
 			MX	5 mail.plug.org.au.
 			TXT	"v=spf1 a ip4:54.252.97.56 ip4:103.249.238.24 mx ~all"
                         TXT     "google-site-verification=U2-WxVXTvcqFLz5Da4dy5aBFIUPe60WKKqYBDGbzYcA"
+                        TXT     "facebook-domain-verification=le8av13591h8zzhvot8uvc6uz9tq80"
 
 _dmarc                  TXT     "v=DMARC1; p=none; pct=100; rua=mailto:re+j8mwd3q8zvf@dmarc.postmarkapp.com; sp=none; aspf=r;"
 iec2025._domainkey	IN	TXT	( "v=DKIM1; h=sha256; k=rsa; "
