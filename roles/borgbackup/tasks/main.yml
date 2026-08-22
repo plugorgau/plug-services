@@ -27,7 +27,7 @@
 
 - name: SSH - Install borg private key per machine
   template:
-    src: secrets/ssh/borgkey-{{ ansible_hostname }}
+    src: secrets/ssh/borgkey-{{ ansible_facts['hostname'] }}
     dest: /root/.ssh/borgkey
     owner: root
     group: root
@@ -35,7 +35,7 @@
 
 - name: SSH - Install borg public key per machine
   template:
-    src: secrets/ssh/borgkey-{{ ansible_hostname }}.pub
+    src: secrets/ssh/borgkey-{{ ansible_facts['hostname'] }}.pub
     dest: /root/.ssh/borgkey.pub
     owner: root
     group: root
