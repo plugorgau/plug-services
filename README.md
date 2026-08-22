@@ -25,8 +25,9 @@ Usage
 * Clone the plug-services repositories
 
 ```sh
-git clone https://github.com/plugorgau/plug-services.git`
-git clone git@github.com:plugorgau/plug-services-secrets.git
+git clone https://github.com/plugorgau/plug-services.git
+cd plug-services
+git submodule update --init
 ```
 
 * Follow the instructions for [the plug-services-secrets repository](https://github.com/plugorgau/plug-services-secrets)
